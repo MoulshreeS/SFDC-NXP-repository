@@ -1,0 +1,20 @@
+.THIS .slds-th__action { 
+    justify-content: center; 
+}
+
+.THIS .Summary {
+   color: blue;    
+}
+
+.THIS .Total {
+   background-color: #FFDC00;    
+}
+
+.THIS .spinnerHolder {
+    position: relative;
+    display: inline-block;
+    margin-left: 15px;
+    width: 55px;
+    vertical-align: middle;
+    white-space: nowrap;
+}

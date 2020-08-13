@@ -1,0 +1,292 @@
+.AOPtable {
+        table-layout:auto;
+        border:0px solid white;
+    }
+    .AOPtrHeader {
+        font-weight:bold;
+        background-color:#1798C1; 
+        vertical-align:bottom;
+    }    
+    .AOPtdHeader {
+        text-align:center;
+        padding:3px;
+    }    
+    .AOPtdSide {
+        text-align:right;
+        font-weight:bold;
+        background-color:#7ec5dc; 
+        padding:3px;
+        white-space:nowrap;
+    }    
+    .DWtdSide {
+        text-align:right;
+        font-weight:normal;
+        background-color:#b1dcea; 
+        padding:3px;
+        white-space:nowrap;
+    }    
+    .AOPtr {
+    }    
+    .AOPtd {
+        text-align:right;
+        background-color:#cbe8f1; 
+        font-weight:bold;
+        padding:3px;
+        white-space:nowrap;
+        width : 85px;
+    }    
+    .DWtd {
+        text-align:right;
+        background-color:#e5f3f8; 
+        font-weight:normal;
+        padding:3px;
+        white-space:nowrap;
+    }    
+    .tableClass {
+        border:1px solid white;
+        border-collapse:collapse;
+        max-width : 1246px; 
+      
+    }
+    .tableHeader { 
+        color:White; 
+        font-weight:bold;
+        background-color:#1798C1; 
+        vertical-align:bottom;
+        max-width: 1246px;
+
+        
+    }
+    .tableHeader th:nth-child(1) 
+    { 
+        max-width : 65px;
+        min-width : 65px;
+    }
+    .tableHeader th:nth-child(2) 
+    { 
+        min-width : 135px;
+        max-width : 135px;
+    }
+    .tableHeader th:nth-child(3) 
+    { 
+        min-width : 60px;
+        max-width : 60px;
+    }
+    .tableHeader th:nth-child(4) 
+    { 
+        min-width : 60px;
+        max-width : 60px;
+    }
+    .tableHeader th:nth-child(5) 
+    { 
+        min-width : 115px;
+        max-width : 115px;
+
+    }
+    .tableHeader th:nth-child(6) 
+    { 
+        min-width : 160px;
+        max-width : 160px;
+        text-align: center;
+    }
+    .tableHeader th:nth-child(7) 
+    { 
+        min-width : 60px;
+        max-width : 60px;
+    }
+    .tableHeader th:nth-child(8) 
+    { 
+        min-width : 80px;
+        max-width : 80px;
+    }
+    .tableHeader th:nth-child(9) 
+    { 
+        min-width : 90px;
+        max-width : 90px;
+    }
+    .tableHeader th:nth-child(10) 
+    { 
+        min-width : 80px;
+        max-width : 80px;
+    }
+    .tableHeader th:nth-child(11) 
+    { 
+        min-width : 80px;
+        max-width : 80px;
+    }
+    .tableHeader th:nth-child(12) 
+    { 
+        min-width : 90px;
+        max-width : 90px;
+    }
+    .tableHeader th:nth-child(13) 
+    { 
+        min-width : 170px;
+        max-width : 170px;
+    }
+    .tableHeader th:nth-child(14) 
+    { 
+        min-width : 155px;
+        max-width : 155px;
+    }
+    .column1
+    {
+        vertical-align: top;
+        min-width : 65px;
+        max-width : 65px;
+    }
+    .column2
+    {
+        vertical-align: top;
+        min-width : 135px;
+        max-width : 135px;
+    }
+    .column3
+    {
+        vertical-align: top;
+        min-width : 60px;
+        max-width : 60px;
+    }
+    .column4
+    {
+        vertical-align: top;
+        min-width : 60px;
+        max-width : 60px;
+    }
+    .column5
+    {
+        vertical-align: top;
+        min-width : 115px;
+        max-width : 115px;
+    }
+    .column6
+    {
+        vertical-align: top;
+        min-width : 160px;
+        max-width : 160px;
+    }
+    .column7
+    {
+        vertical-align: top;
+        min-width : 60px;
+        max-width : 60px;
+        
+    }
+    .column8
+    {
+        vertical-align: top;
+        min-width : 80px;
+        max-width : 80px;
+    }
+    .column9
+    {
+        vertical-align: top;
+        min-width : 90px;
+        max-width : 90px;
+    }
+    .column10
+    {
+        vertical-align: top;
+        min-width : 80px;
+        max-width : 80px;
+    }
+    .column11
+    {
+        vertical-align: top;
+        min-width : 80px;
+        max-width : 80px;
+    }        
+    .column12
+    {
+        vertical-align: top;
+        min-width : 90px;
+        max-width : 90px;
+    }        
+    .column13
+    {
+        vertical-align: top;
+        min-width : 170px;
+        max-width : 170px;
+    }
+    .column14
+    {
+        vertical-align: top;
+        min-width : 145px;
+        max-width : 145px;
+    }                                    
+    .indexColumn { 
+        font-weight:bold; 
+        color:#1798C1; 
+        align:right; 
+    }    
+    .lightRow { 
+        background-color:#e5f3f8; 
+        border:0; 
+    } 
+    .darkRow { 
+        background-color:#cbe8f1; 
+        border:0; 
+    }
+    .lightColumn { 
+        background-color:#b1dcea; 
+        border:0; 
+    }
+    .darkColumn {
+        background-color:#7ec5dc; 
+        border:0; 
+    } 
+    .inputText { 
+        border:0; 
+        background-color:#E5F3F8; 
+    }    
+    .inputSelectList { 
+        border:0; 
+        background-color:#E5F3F8; 
+    }    
+    .tableFooter { background-color:#CBE8F1; }    
+    
+    /* define height and width of scrollable area. Add 16px to width for scrollbar          */
+    div.pbBody {
+      clear: both;
+      overflow: scroll
+    }
+    
+    /* Reset overflow value to hidden for all non-IE browsers. */
+    html>body div.pbBody {
+      overflow: visible;
+    }
+    
+    /* define width of table. IE browsers only                 */
+    div.pbBody table {
+      float: left;
+      vertical-align:top;  
+    }
+    
+    /* define width of table. Add 16px to width for scrollbar.           */
+    /* All other non-IE browsers.                                        */
+    html>body div.pbBody table {
+    }
+        
+    /* set table header to a fixed position. WinIE 6.x only                                       */
+    /* In WinIE 6.x, any element with a position property set to relative and is a child of       */
+    /* an element that has an overflow property set, the relative value translates into fixed.    */
+    /* Ex: parent element DIV with a class of tableContainer has an overflow property set to auto */
+    thead.tr {
+      position: relative
+    }
+    
+    /* set THEAD element to have block level attributes. All other non-IE browsers            */
+    /* this enables overflow to work on TBODY element. All other non-IE, non-Mozilla browsers */
+    html>body thead.tr {
+      display: block
+    }
+    
+    /* define the table content to be scrollable                                              */
+    /* set TBODY element to have block level attributes. All other non-IE browsers            */
+    /* this enables overflow to work on TBODY element. All other non-IE, non-Mozilla browsers */
+    /* induced side effect is that child TDs no longer accept width: auto                     */
+    html>body tbody.thePage:j_id1:pageBlockEditLegalName:detailTable:tb {
+      display: block;
+      overflow: scroll;
+      width: 100%
+    }

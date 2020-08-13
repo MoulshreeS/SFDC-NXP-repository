@@ -1,0 +1,37 @@
+/* Standard table */
+table {
+    margin-bottom: 12px;
+}
+
+/* Products table */
+table.products {
+    background-color: #fff;
+    border-collapse: collapse;
+    border: 1px solid #adaeaf;
+    width: 100%;
+}
+
+table.products th {
+    background-color: #adaeaf;
+    border-right: 1px dotted #848586;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 12px;
+    text-align: left;
+    vertical-align: center;
+}
+
+table.products tr.odd {
+    background-color: #fff;
+}
+
+table.products tr.even {
+    background-color: #e3e4e5;
+}
+
+table.products td {
+    border-right: 1px dotted #848586;
+    padding: 6px 12px;
+    text-align: left;
+    vertical-align: center;
+}

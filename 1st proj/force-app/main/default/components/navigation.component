@@ -1,0 +1,5 @@
+<apex:component >
+ <a href="/community/apex/CommunitiesHomePage">Community Forum </a>
+           <apex:image value="{!$Resource.arrow}"  height="10"/>
+
+</apex:component>

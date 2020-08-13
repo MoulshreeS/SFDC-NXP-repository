@@ -1,0 +1,5 @@
+<apex:page standardController="contact">
+ 
+  <h1>Eloqua Customer Profiler moved as button at the top of the screen</h1>
+ 
+</apex:page>

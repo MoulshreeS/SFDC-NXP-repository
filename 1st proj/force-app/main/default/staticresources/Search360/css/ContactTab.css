@@ -1,0 +1,38 @@
+		#contactStyle .objects{
+			border-top: 4px solid #56458C;
+			border-right: 2px solid #56458C;
+			border-bottom: 2px solid #56458C;
+		}
+		#contactStyle .pagSize{
+			text-align: right; 
+			padding: 2px;
+			color: #56458C;
+			font-weight:bold;
+		}
+		#contactStyle .paginator{
+			border-bottom: 1px solid #56458C;
+			border-top: 1px solid #56458C;
+			text-align:center;
+		}
+		#contactStyle .paginator a{
+			color:#56458C !important;
+			font-weight:bold;
+		}
+		#contactStyle .jumpToPage{
+			position:absolute;
+			right:10px;
+			top:8px;
+			color: #56458C;
+			font-weight:bold;
+		}
+		#contactStyle .counter{
+			position:absolute;
+			left:0px;
+			top: 12px;
+			color:#56458C;
+			font-weight:bold;
+		}
+		#contactStyle .myTable .objectHeaders td {
+			padding:5px 0;
+			text-align:center;
+		}

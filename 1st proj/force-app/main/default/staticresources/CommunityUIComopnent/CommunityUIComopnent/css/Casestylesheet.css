@@ -1,0 +1,196 @@
+html, body, #main {font-family: 'Arial'; font-size:12px; line-height:17px;}
+    	.datacategorylinks
+    	{
+    		background: none !important;
+    		padding-top : 10px !important;
+    		padding-bottom: 0px !important;
+    		padding-left: 0px !important;
+    		padding-right: 0px !important;
+    	}
+    	.datacategoryoption 
+    	{
+    		border: none !important;
+    		background: none !important;
+    		position: relative;
+    		top: -30px;
+    		left: -25px;
+    	}
+
+    	.datacategoryoption a 
+    	{
+    		color:White !important;   
+    	}
+        
+    	.datacategorylinks .csChildOption a:hover 
+    	{
+    		text-decoration: underline;
+    	}
+    
+    	.datacategorylinks ul li:first-child
+    	{
+    		display : none !important;
+    	}
+
+    	div.dark-2 div div div 
+    	{
+    		min-height: 0px;
+    	}
+
+    	.datacategorylinks .csChildOption a 
+    	{
+    		padding-left: 40px;
+    	}
+
+    	.jstree-open
+    	{
+    		display:inline-block !important;
+    		height:40px !important;
+    	}
+
+    	.jstree-leaf
+    	{
+    		display:inline-block !important;
+    		width: 100%;
+    	}
+
+    	.jstree-no-dots a:hover 
+    	{
+    		text-decoration: underline;
+    		color: #FFFFFF !important;
+    	}
+
+    	.hoverAnchor a:hover 
+    	{
+     		color:#000000 !important;
+    	}
+
+     	.hoverBlack a:hover 
+     	{
+     		color:#000000 !important;
+     	}
+
+        .TFtable
+        {   
+            margin-top: 12px;
+            background-color: #fff;
+            border-collapse: collapse;
+            border: 1px solid #adaeaf;
+            width: 100%;
+        }
+		/* provide some minimal visual accomodation for IE8 and below */
+		.TFtable tr
+        {
+            background-color: #adaeaf;
+            border-right: 1px dotted #848586;
+            font-size: 12px;
+            padding: 6px 12px;
+            text-align: left;
+            vertical-align: center;
+        }
+      /*  Define the background color for all the ODD background rows  */
+        .TFtable tr:nth-child(odd)
+        { 
+            background-color:       #F2F2F2; 
+        }
+	/*  Define the background color for all the EVEN background rows  */
+		.TFtable tr:nth-child(even)
+        {
+            background-color:   #E6E6E6;  
+        }
+		.tableHeader
+        {
+            /*height : 17px;*/
+            Border-left: dotted 1px;
+            background-color : #A6A6A6;
+            padding-left: 12px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            padding-right: 5px;
+            font-size: 12px;
+            font-weight: 700;
+            word-wrap: normal;
+        }
+		.TFtable td
+        {
+            border-right: 1px dotted #848586;
+            padding: 6px 12px;
+            text-align: left;
+            vertical-align: center;   
+        }        
+
+    .leftPart
+    {
+        padding:20px 0
+    }
+	.leftPart
+    {
+        float:left;padding-right:20px;width:203px;overflow:visible
+    }
+    .centerContent .tbsearchAskForm #cs\3A searchAskContainer .cxSearchOrPost 
+    {                                  
+        width: 406px;
+    }
+    .centerContent #cs\3A searchAskForm.tbsearchAskForm 
+    {
+        width: 451px;
+    }            
+    .centerContent #cs\3A searchAskForm.tbsearchAskForm #cs\3A searchAskInputContainer 
+    {
+        width: 316px;
+    }            
+    .centerContent #cs\:searchAskForm.tbsearchAskForm #cs\:searchAskInputContainer input 
+    {
+        width: 376px;
+    }            
+    .centerContent #cs\3A searchAskForm.tbsearchAskForm #cs\3A searchAskContainer .cxsearchResultPanel 
+    {
+		width: 420px;
+    }
+	.centerContent #cs\3A searchAskForm.tbsearchAskForm #cs\3A searchAskContainer .type 
+    {
+		width: 416px;
+    }
+	.centerContent .tbsearchAskForm #cs\3A searchAskContainer .cxSearchOrPost 
+    {
+		/* width: 507px; */
+		width: 413px;
+    }
+	.centerContent #cs\3A searchAskForm.tbsearchAskForm .postBits 
+    {
+		width: 421px;
+    }
+	.centerContent .tbsearchAskForm #cs\3A searchAskContainer .type li 
+    {
+		width: 416px;
+		padding-left: 30px;
+		padding-right: 0px;
+    }
+	.centerContent 
+    {
+		padding-left:0px;
+	}
+	.threecolumn
+    {
+		margin-right: 10px;
+		margin-left: -10px;
+	}
+    .datacategorylinks 
+    {
+		list-style: none;
+		border: 0px outset #ffb258;
+		min-height: 50px;
+		position: relative;
+	}
+	.rightContent
+    {
+		right:20px;
+    }
+	.datacategorylinks ul li:nth-child(1) 
+    {
+        width: 410px;
+    }
+    .rightContent ul 
+    {
+		margin: 0 0 -4px 12px;
+    }
+                                         

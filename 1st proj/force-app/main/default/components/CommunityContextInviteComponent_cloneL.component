@@ -1,0 +1,299 @@
+<!--
+
+CLONE OF CommunityContextInviteComponent for use in the NXP Lightning community while the original file is still being used in the legacy NXP Community.
+Modifications have been made to load a template without a header and footer, as well as link to other cloned files that have the header and footer removed. No other
+business logic changes should be made in this file.
+
+PRIOR TO FINAL PRODUCTION GO LAUNCH, COMPARE TO PRODUCTION VERSION OF ORIGINAL FILE TO DETERMINE IF CHANGES TO BUSINESS LOGIC HAVE BEEN MADE THAT WILL NEED TO BE
+INCORPORATED BACK INTO THIS FILE.
+
+-->
+
+<apex:component controller="CommunityContextInviteController_cloneL" allowDML="true">
+    <apex:attribute name="noContext" required="true" type="boolean" description="validation" />
+    <apex:attribute name="entitlement" assignTo="{!currentEntitlementId}" type="string" required="false" description="Entitlement Id" />
+    <apex:form >
+        <apex:actionFunction name="removeInv" action="{!removeInvitee}" rerender="inviteMessage">
+            <apex:param name="counter" value="" />
+            <apex:param name="type" value="" />
+        </apex:actionFunction>
+        <!-- <div id="nxp-wrapper">-->
+        <div class="container">
+            <!-- /.row -->
+            <div class="row">
+                <!-- Top Row -->
+                <div class="invitee-intro col-xs-12">
+                    <!--  <p class="invitee-intro-text lead">{!$Label.CommunityParticipantHelpText}</p>
+                        -->
+                    <h1> {!$Label.CommunityShareFolder}</h1>
+                    <h2>{!$Label.CommunityManageParticipants}</h2>
+                    <p class="invitee-intro-text lead">
+                    <div class="col-xs-12 col-sm-4 col-lg-3 col-lg-offset">
+                        <!-- Two column instructions -->
+                        <h3>{!$Label.CommunityParticipants}</h3>
+                        <ul class="boxes">
+                            <li>{!$Label.CommunityParticipantText}
+                                <strong>{!$Label.Communitythis} </strong>{!$Label.CommunityCommunication}
+                            </li>
+                            <li>{!$Label.CommunityOwnerMessage}</li>
+                        </ul>
+                    </div>
+                    <p class="invitee-intro-text lead">
+                    <div class="col-xs-12 col-sm-4 col-lg-4">
+                        <h3>{!$Label.CommunityObservers}</h3>
+                        <ul class="boxes">
+                            <li>{!$Label.CommunityObserverText} <strong>{!$Label.Communitythis} </strong> {!$Label.CommunityCommunication}</li>
+                            <li>{!$Label.CommunityCan}<strong>{!$Label.CommunityNot} </strong>{!$Label.CommunitySubmitObserversText}</li>
+                        </ul>
+                    </div>
+                    </p>
+                    <div class="col-xs-12 col-sm-4 col-lg-3">
+                        <h3>{!$Label.CommunityParticipantsObservers}</h3>
+                        <ul class="boxes">
+                            <li>{!$Label.CommunityParticipantObserverText}</li>
+                            <li>{!$Label.CommunityParticipantObserverSuggestion}</li>
+                        </ul>
+                    </div>
+                    </p>
+                </div>
+                <apex:outputPanel id="inviteMessage">
+                    <div class="row">
+                        <h2>{!$Label.CommunityParticipants}</h2><br/>
+                        <h2 class="invitee-intro-title">
+                                {!participantErrorMessage}
+                        </h2>
+                        <p class="invitee-intro-text lead" style="{!if(existingParticipants!=0, 'display:block','display:none')}"> {!existingParticipants} {!$Label.CommunityExistingParticipatns}
+                        </p>
+                    </div>
+                    <div class="row">
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <apex:repeat value="{!headers}" var="part">
+                                    <th>{!part}</th>
+                                </apex:repeat>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <apex:repeat value="{!participantsList}" var="part">
+                                <tr>
+                                    <!-- <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td> -->
+                                    <th scope="row">
+                                            {!part.counter}
+                                    </th>
+                                    <td>
+                                        <apex:outputPanel layout="none" rendered="{!part.contactRecord.id != null}">
+                                            <apex:outputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.FirstName}" html-placeholder="{!$Label.CommunityFirstNameLabel}" />
+                                        </apex:outputPanel>
+                                        <apex:outputPanel layout="none" rendered="{!part.contactRecord.id == null}">
+                                            <apex:inputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.FirstName}" html-placeholder="{!$Label.CommunityFirstNameLabel}" />
+                                        </apex:outputPanel>
+                                    </td>
+                                    <td>
+                                        <apex:outputPanel layout="none" rendered="{!part.contactRecord.id != null}">
+                                            <apex:outputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.LastName}" html-placeholder="{!$Label.CommunityLastNameLabel}" />
+                                        </apex:outputPanel>
+                                        <apex:outputPanel layout="none" rendered="{!part.contactRecord.id == null}">
+                                            <apex:inputText styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.LastName}" html-placeholder="{!$Label.CommunityLastNameLabel}" />
+                                        </apex:outputPanel>
+                                    </td>
+                                    <td>
+                                        <apex:outputPanel layout="none" rendered="{!part.contactRecord.id != null}">
+                                            <apex:outputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.Company__c}" html-placeholder="{!$Label.CommunityCompanyNameTitle}" />
+                                        </apex:outputPanel>
+                                        <apex:outputPanel layout="none" rendered="{!part.contactRecord.id == null}">
+                                            <apex:inputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.Company__c}" html-placeholder="{!$Label.CommunityCompanyNameTitle}" />
+                                        </apex:outputPanel>
+                                    </td>
+                                    <td>
+                                        <apex:outputPanel layout="none" rendered="{!part.contactRecord.id != null}">
+                                            <apex:outputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.Email}" html-placeholder="example@email.com" />
+                                        </apex:outputPanel>
+                                        <apex:outputPanel layout="none" rendered="{!part.contactRecord.id== null}">
+                                            <apex:inputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.Email}" html-placeholder="example@email.com" />
+                                        </apex:outputPanel>
+                                    </td>
+                                    <td>
+                                            {!part.status}
+                                    </td>
+                                    <td>
+                                        <apex:outputPanel layout="none" rendered="{!part.contactRecord.id != null}">
+                                            <a href="#" onclick="if(confirm('{!$Label.CommunityConfirmInviteText}')){removeInv('{!part.counter}', 'Participant');}" title="Delete">
+                                                <span class="icon icon-close"></span>
+                                            </a>
+                                        </apex:outputPanel>
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <h2>{!$Label.CommunityObservers}</h2><br/>
+                        <h2 class="invitee-intro-title">
+                                {!observerErrorMessage}
+                        </h2><br/>
+                        <p class="invitee-intro-text lead" style="{!if(existingObservers!=0, 'display:block', 'display:none')}">
+                        {!existingObservers} {!$Label.CommunityExistingObservers}
+                        </p>
+                        <div class="row">
+                            <apex:variable var="counter" value="{!0}" />
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <apex:repeat value="{!headers}" var="part">
+                                        <th>{!part}</th>
+                                    </apex:repeat>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <apex:repeat value="{!observersList}" var="part">
+                                    <apex:variable var="counter" value="{!counter+1}" />
+                                    <tr>
+                                        <!-- <th scope="row">1</th>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td> -->
+                                        <th scope="row">
+                                                {!part.counter}
+                                        </th>
+                                        <td>
+                                            <apex:outputPanel layout="none" rendered="{!part.contactRecord.id != null}">
+                                                <apex:outputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.FirstName}" html-placeholder="{!$Label.CommunityFirstNameLabel}" />
+                                            </apex:outputPanel>
+                                            <apex:outputPanel layout="none" rendered="{!part.contactRecord.id == null}">
+                                                <apex:inputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.FirstName}" html-placeholder="{!$Label.CommunityFirstNameLabel}" />
+                                            </apex:outputPanel>
+                                        </td>
+                                        <td>
+                                            <apex:outputPanel layout="none" rendered="{!part.contactRecord.id != null}">
+                                                <apex:outputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.LastName}" html-placeholder="{!$Label.CommunityLastNameLabel}" />
+                                            </apex:outputPanel>
+                                            <apex:outputPanel layout="none" rendered="{!part.contactRecord.id == null}">
+                                                <apex:inputText styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.LastName}" html-placeholder="{!$Label.CommunityLastNameLabel}" />
+                                            </apex:outputPanel>
+                                        </td>
+                                        <td>
+                                            <apex:outputPanel layout="none" rendered="{!part.contactRecord.id != null}">
+                                                <apex:outputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.Company__c}" html-placeholder="{!$Label.CommunityCompanyNameTitle}" />
+                                            </apex:outputPanel>
+                                            <apex:outputPanel layout="none" rendered="{!part.contactRecord.id == null}">
+                                                <apex:inputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.Company__c}" html-placeholder="{!$Label.CommunityCompanyNameTitle}" />
+                                            </apex:outputPanel>
+                                        </td>
+                                        <td>
+                                            <apex:outputPanel layout="none" rendered="{!part.contactRecord.id != null}">
+                                                <apex:outputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.Email}" html-placeholder="example@email.com" />
+                                            </apex:outputPanel>
+                                            <apex:outputPanel layout="none" rendered="{!part.contactRecord.id== null}">
+                                                <apex:inputField styleclass="form-control mandatoryValidation {!part.mandatoryStyle }" value="{!part.ContactRecord.Email}" html-placeholder="example@email.com" />
+                                            </apex:outputPanel>
+                                        </td>
+                                        <td>
+                                                {!part.status}
+                                        </td>
+                                        <td>
+                                            <apex:outputPanel layout="none" rendered="{!part.contactRecord.id != null}">
+                                                <a href="#" class="remove" onclick="if(confirm('{!$Label.CommunityConfirmInviteText}')){removeInv('{!part.counter}', 'Observer');}" title="Delete">
+                                                    <span class="icon icon-close"></span>
+                                                </a>
+                                            </apex:outputPanel>
+                                        </td>
+                                    </tr>
+                                    <apex:outputpanel layout="none" rendered="{!OR(counter==3, counter==10)}">
+                                        <tr>
+                                            <td colspan="5">
+                                            </td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                </apex:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group text-center">
+                            <apex:outputPanel layout="none" >
+                                <apex:commandButton styleclass="btn btn-lg btn-orange" action="{!createInviteRecords}" rerender="inviteMessage" value="{!if(noContext, $Label.CommunityInviteeSubmitButtonLabel, $Label.CommunityInviteeButtonLabel)}" />
+                                <button type="reset" class="{!if(noContext, 'btn btn-lg  btn-orange', 'btn btn-lg')}" onclick="window.location.href='{!URLFOR($Page.CommunityContextPage_cloneL)}'">
+                                    <apex:outputPanel layout="none" rendered="{!noContext}">
+                                            {!$Label.CommunityInviteCancelButtonLabel}
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!!noContext}">
+                                            {!$Label.CommunityCancelButtonLabel}
+                                    </apex:outputPanel>
+                                </button>
+                                <button type="reset" class="btn btn-lg" >{!$Label.CommunityResetButtonLabel}</button>
+
+                            </apex:outputPanel>
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                    <script type="text/javascript">
+                        $(function() {
+                            var pgurl = window.location.href.substr(window.location.href.lastIndexOf("/") + 1);
+                            $(".tabBar li").each(function() {
+                                if ($(this).children('a').attr("href") == pgurl)
+                                    $(this).attr('id', 'selectedTab');
+                            })
+                        });
+
+                        jQuery(document).ready(function($) {
+                            if (window.location.search.indexOf('entitlementId') == -1 && '{!noContext}' == 'false') {
+                                alert('{!$Label.CommunityInviteContextRedirect}');
+                                window.location.href = '{!URLFOR($Page.CommunityContextPage_cloneL)}';
+                            }
+
+                            $('#form_tabs a').click(function(e) {
+                                e.preventDefault();
+                                $(this).tab('show');
+                            });
+
+                            $('.mandatoryValidation').keyup(function() {
+
+                                var className = $(this).attr('class');
+                                var csName = className;
+                                console.log('kjkjk'+($(this).val().length));
+
+                                className = className.replace('mandatoryValidation ', '');
+                                className = className.replace('form-control ', '');
+                                //  alert('&&&'+className);
+                                //   $('.'+className).addClass("requiredInput");
+
+                                if($(this).val().length > 0)
+                                    $('.' + className).attr("required", "true");
+
+
+
+                            });
+
+                            // Add Observers
+                            $("#add_observer_btn").click(function(e) {
+                                e.preventDefault();
+                                if ($(".observer-container").hasClass("hidden")) {
+                                    $(".observer-container.hidden:first").removeClass("hidden");
+                                } else {
+                                    alert("You have reached the maximum amount of Observers.");
+                                }
+                            });
+
+                            // {!$Label.CommunityRemoveObserver}
+                            $(".btn-remove-observer").click(function() {
+                                $(this).parents(".observer-container").addClass("hidden");
+                            });
+
+                        }); // end document ready
+                    </script>
+                </apex:outputPanel>
+            </div>
+            <!-- /.container -->
+        </div>
+        <!-- </div>-->
+
+
+    </apex:form>
+</apex:component>

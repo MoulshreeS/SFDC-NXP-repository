@@ -1,0 +1,39 @@
+<apex:component >
+ <div id="header-top" style="height: 50px; padding-top: 15px;background-color: white;">
+        <div class="logo"
+            style="float: left; padding-left: 15px; padding-top: 5px; border:none;">
+            <a shape="rect" href="http://www.nxp.com"
+                title="NXP Semiconductors homepage"> <apex:image value="{!$Resource.NXPLogo}" alt="NXP Semiconductor" width="85"
+                    height="32" style="outline:none; border:0;" /> </a>
+        </div>
+        <ul class="left"
+            style="z-index: 1; position: relative; left: 90px top :     15px;">
+            <li class="first disp_inline border"><a
+                href="http://www.nxp.com/">Home</a>
+            </li>
+            <li class="disp_inline border"><a
+                href="http://www.nxp.com/about.html">About NXP</a>
+            </li>
+            <li class="disp_inline border"><a
+                href="http://www.nxp.com/news.html">News</a>
+            </li>
+            <li class="disp_inline border"><a
+                href="http://www.nxp.com/careers.html">Careers</a>
+            </li>
+            <li class="disp_inline border"><a
+                href="http://investors.nxp.com">Investors</a>
+            </li>
+             <li class="disp_inline border"><a
+                href="http://response.nxp.com/biweekly-enewsletter-subscription">NXP Newsletter</a>
+            </li>
+            <li class="disp_inline border"><a
+                href="http://blog.nxp.com">NXP Blog</a>
+            </li>
+            <li class="disp_inline last"><a
+                href="http://www.nxp.com/support.html">Contact</a>
+            </li>
+            <!-- <li class="disp_inline last" style=" padding-left: 185px;" ><a href="http://www.nxp.com">Logout</a></li>  -->
+        </ul>
+    </div>
+
+</apex:component>

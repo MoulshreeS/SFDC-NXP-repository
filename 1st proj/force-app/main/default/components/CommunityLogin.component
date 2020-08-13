@@ -1,0 +1,15 @@
+<apex:component >
+  <div style="position:relative; left:1050px; width:300px;" >
+     <ul style=" list-style-type: none; display: inline;">
+      <li style="display: inline;float:left;"><h6 style="display: block;line-height: 1em;">New here?</h6>
+      <br/> <a href="https://nxpcommunity.force.com/community/CommunitiesSelfReg" class="action" style="text-decoration: none;">Sign Up</a></li>
+    <li  style= "display: inline;float:left;"><h6 style="display: block;line-height: 1em;"> <span>Have an account?</span></h6>
+    <br/><a
+                            href="https://nxpcommunity.force.com/community/customcommunitylogin?startUrl=/_ui/chatter/service/ChatterAnswersUi">Sign
+                            In</a>
+                            </li>
+                            </ul>
+              </div>    
+                    
+ <div style="position:relative;background-color: #1797C0;height: 3px;max-width:1349px;top:50px;"></div>
+</apex:component>

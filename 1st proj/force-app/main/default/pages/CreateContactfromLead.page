@@ -1,0 +1,22 @@
+<apex:page standardController="Lead" sidebar="false" showHeader="false">
+    <apex:includeLightning />
+    <div id="lightning" />  
+
+    <script>        
+    var recordId = "{!$CurrentPage.parameters.id}";     
+    $Lightning.use("c:CreateContactinLeadapp", function(){        
+        $Lightning.createComponent("c:CreateContactinLead",       
+         {"recordId" : recordId
+         },                                    
+         "lightning",       
+          function(cmp){
+              
+           }                                   
+          );
+          
+                      
+        });     
+    </script>
+    
+
+</apex:page>

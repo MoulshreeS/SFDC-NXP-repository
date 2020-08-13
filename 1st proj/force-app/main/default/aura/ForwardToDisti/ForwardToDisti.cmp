@@ -1,0 +1,145 @@
+<aura:component controller="ForwardLeadToDistiController" implements ="force:lightningQuickActionWithoutHeader,force:hasRecordId" >
+	<aura:attribute name="Contact" type="Contact" />
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="IsProcessing" type="boolean" default="false"/> 
+    <aura:attribute name="IsDefaultView" type="boolean" default="true"/> 
+    
+    <aura:attribute name="inputEmail" type="String" access="private"/>
+    <aura:attribute name="contactFound" type="Contact" access="private" default="null" /> 
+    <aura:attribute name="ShowSearchResults" type="boolean" default="false" access="private"/> 
+    <aura:attribute name="createNewContact" type="boolean" default="false" access="private"/>   
+    <aura:attribute name="communityUserAccountId" type="Id" access="private"/>
+    <aura:attribute name="communityUserCountry" type="String" access="private"/>
+    
+    <aura:attribute name="message" description="Message content, can be HTML" type="String[]" 
+                    default="[]"/>
+	<aura:attribute name="messagetype" description="Message type, can be error/warning/info/success" type="String" default=""/>
+    
+    <!--loading spinner start... style=Brand Medium (blue dots)-->
+ 	<aura:if isTrue="{!v.IsProcessing}">
+    	<div aura:id="spinnerId" class="slds-spinner_container slds-is-relative">
+           <div class="slds-spinner--brand  slds-spinner slds-spinner--medium slds-is-relative" role="alert">
+             <span class="slds-assistive-text">Loading</span>
+             <div class="slds-spinner__dot-a"></div>
+             <div class="slds-spinner__dot-b"></div>
+           </div>
+        </div>
+ 	</aura:if>
+  	<!-- Loading spinner end-->
+    <aura:if isTrue="{! !empty(v.message)}">
+        <div class="{!'slds-box slds-theme–alert-texture slds-theme_' + v.messagetype}">
+            <lightning:icon iconName="{! 'utility:'+ v.messagetype }" size="small" alternativeText="{!v.messagetype}" Class="iconContainer" />            
+            <span class="slds-text-body–regular">
+                <aura:iteration items="{!v.message}" var="item">
+                    <p>{!item}</p>
+                </aura:iteration>
+            </span>
+        </div>
+    </aura:if>
+	
+    <aura:if isTrue="{!v.IsDefaultView}">
+        <!-- Step 1 to search contact via email/name -->	
+        <div class="slds-form slds-form_stacked slds-p-around_large slds-m-top_large 
+                    slds-border_top slds-border_right slds-border_left slds-border_bottom">
+            <div class="slds-col slds-align-middle">
+                <p>To forward a lead to a colleague and transfer ownership of the lead, please search for the contact using their Name or Email Address.</p>
+                <br />
+            </div>        
+            <div class="slds-form-element">
+                <label class="slds-form-element__label" ><abbr class="slds-required" title="required">*</abbr>Search Contact:</label>
+                <c:SearchAndSelectContacts selContact="{!v.Contact}" limit="10"/>
+            </div>
+        </div>
+        <div class="slds-col slds-align-middle slds-m-top_large">
+            <div class="slds-scoped-notification slds-media slds-media_center" role="status">
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-utility-info" title="information">
+                        <lightning:icon iconName="utility:warning" alternativeText="Warning!" variant="warning"/>
+                        <span class="slds-assistive-text">Warning</span>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <p>If you are not able to find your colleague, please <a href="javascript:void(0)" onclick="{!c.handleToNextStep}">click here</a> 
+                        to perform advance search</p>
+                </div>
+            </div>
+		</div>
+        
+        <div class="slds-m-bottom_large">
+            <lightning:button label="Cancel" onclick="{!c.handleCancel}" class="slds-m-top_medium" />
+            <lightning:button label="Forward" onclick="{!c.handleForwardToDisti}"
+                              variant="brand" class="slds-m-top_medium"/>
+        </div>
+        <!-- code to show next step to find contact by email address -->    
+        <aura:set attribute ="else" >
+            <div class="slds-p-around_small slds-m-top_small slds-border_top slds-border_right slds-border_left slds-border_bottom">
+                <label class="slds-form-element__label" >Email:</label>
+                <lightning:input type="email" name ="contactEmail" aura:id="contactEmail" required="true" 
+                               messageWhenValueMissing = "Email is mandatory" value="{!v.inputEmail}"/>
+        
+                <div class="slds-m-bottom_large">
+                    <lightning:button label="Cancel" onclick="{!c.handleCancel}" class="slds-m-top_medium" />
+                    <lightning:button label="Back" onclick="{!c.handleBack}" class="slds-m-top_medium" />
+                    <lightning:button label="Search" onclick="{!c.handleSearchContactByEmail}" variant="brand" class="slds-m-top_medium"/>
+                </div>
+			</div>
+            <!-- code to show search results -->
+            <aura:if isTrue="{! v.ShowSearchResults}">
+                <!-- code to show contact found -->
+                <aura:if isTrue="{!v.contactFound != null }">
+                    <div class="slds-p-around_large slds-m-top_large slds-border_top slds-border_right slds-border_left slds-border_bottom">
+                        <lightning:tile label="{!v.contactFound.Name}">
+                            <dl class="slds-list_horizontal slds-wrap">
+                                <dt class="slds-item_label" title="Community Web Country">Country:</dt>
+                                <dd class="slds-item_detail">{!v.contactFound.Community_web_country__c}</dd>
+                                <dt class="slds-item_label" title="Email">Email:</dt>
+                                <dd class="slds-item_detail">{!v.contactFound.Email}</dd>
+                            </dl>
+                        </lightning:tile>
+                    </div>
+                    <div class="slds-m-bottom_large">
+                    	<lightning:button label="Add" onclick="{!c.handleAddContact}" variant="brand" class="slds-m-top_medium"/>
+                    </div>                    
+                    <!-- code to show no results -->
+                    <aura:set attribute ="else" >
+                        <aura:if isTrue="{!v.createNewContact}">
+                            <div class="slds-m-top_large slds-m-bottom_large slds-border_top slds-border_right slds-border_left slds-border_bottom">
+                                <lightning:card title="New Contact">
+                                    <p class="slds-p-horizontal_small">
+                                        <lightning:recordEditForm aura:id="newContactEditForm" 
+                                                                  objectApiName="Contact"
+                                                                  onsubmit="{!c.handleSaveNewContact}"
+                                                                  onsuccess="{!c.handleSaveNewContactSuccess}">
+                                            <lightning:messages />
+                                            <lightning:inputField fieldName="FirstName" />
+                                            <lightning:inputField fieldName="LastName" />   
+                                            <lightning:inputField fieldName="Title" />
+                                            <lightning:button class="slds-m-top_small" variant="brand" type="submit" label="Save" />
+                                        </lightning:recordEditForm>
+                                    </p>
+                                </lightning:card>
+                            </div>
+                            <aura:set attribute ="else" >
+                                <div class="slds-m-top_none slds-col slds-align-middle">
+                            <div class="slds-scoped-notification slds-media slds-media_center" role="status">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-utility-info" title="information">
+                                        <lightning:icon iconName="utility:warning" alternativeText="Warning!" variant="warning"/>
+                                        <span class="slds-assistive-text">Warning</span>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <p>No matching contact found. Click <a href="javascript:void(0)" onclick="{!c.handleCreateNewContact}">here</a> 
+                                        to create a new one.</p>
+                                </div>
+                            </div>
+                        </div>
+                            </aura:set>
+                        </aura:if>
+                        
+                    </aura:set>
+                </aura:if>                
+			</aura:if>
+		</aura:set>
+	</aura:if>
+</aura:component>

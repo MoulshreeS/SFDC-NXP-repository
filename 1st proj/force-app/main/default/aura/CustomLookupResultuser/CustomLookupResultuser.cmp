@@ -1,0 +1,20 @@
+<aura:component >
+	<aura:attribute name="oAccount" type="Account" />
+            
+  <!--Register the component level event-->
+    <aura:registerEvent name="UserSObjectRecordEvent" type="c:UserSObjectRecordEvent"/>
+    
+    <li role="presentation">        
+        <span class="slds-lookup__item-action slds-media slds-media--center" id="lookup-option-351" role="option">
+        <div class="slds-media__body">            
+            <div class="slds-lookup__result-text">                                                                                  
+                <a onclick="{!c.selectDistiPrd}">
+                    {!v.oAccount.Name} &nbsp;| &nbsp; {!v.oAccount.Country__c} &nbsp; | &nbsp; {!v.oAccount.City__c}
+                </a>                                                                       
+          </div> 
+            </div>
+        </span>
+    </li>
+    
+    
+</aura:component>

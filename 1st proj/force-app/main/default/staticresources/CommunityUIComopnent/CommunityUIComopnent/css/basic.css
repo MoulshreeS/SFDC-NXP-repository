@@ -1,0 +1,129 @@
+/* Basic styles */
+html,body,div {
+    color: #313233;
+    font-family: Arial;
+    font-size: 12px;
+    line-height: 17px;
+}
+
+body {
+    background-color: #FFF;
+}
+
+/* Headers / text sizes */
+h1,h2,h3 {
+    font-family: Arial;
+}
+
+h1 {
+    font-size: 32px;
+    line-height: 28px;
+}
+
+h2 {
+    font-size: 17px;
+    line-height: 20px;
+}
+
+h3 {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 17px;
+}
+
+/* Lists */
+p,ul,ol {
+    font-size: 12px;
+    padding: 0 0 12px;
+}
+
+ul li ul {
+    padding: 0;
+}
+
+ol {
+    list-style-type: decimal;
+    margin-left: 22px;
+}
+
+/* Font styles */
+strong {
+    font-weight: 700;
+}
+
+em {
+    font-style: italic;
+}
+
+/* Link */
+a {
+    border-bottom: 1px dotted #adaeaf;
+    color: #313233;
+    outline: 0;
+}
+
+a: hover {
+    border-bottom: 1px solid #adaeaf!important;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.clearfix {
+    clear: both;
+}
+
+/* NXP Colour */
+.nxp-white {
+    color: #fff;
+}
+
+.nxp-green {
+    color: #FFB258;
+}
+
+.nxp-darkgreen {
+    color: #4B8302;
+}
+
+/* main container */
+#wrapper {
+    margin: 16px 0 0 12px;
+    width: 954px;
+}
+
+/* Dotted line */
+span.center-dotted {
+    background: url(../img/header-footer-sprite.png) repeat-x left -988px transparent!important;
+    clear: both;
+    display: block;
+    height: 24px;
+}
+
+/* box layout */
+.box-1,.box-3 {
+    float: left;
+    margin-right: 14px;
+    margin-top: 14px;
+}
+
+.box-3.last {
+    margin-right: 0;
+}
+
+.box-1 {
+    width: 228px;
+}
+
+.box-3 {
+    width: 712px;
+}
+
+div.noborder {
+    clear: both;
+    padding: 6px 6px 6px 4px;
+    width: auto!important;
+}
+
+div.noborder.top {
+    padding-top: 4px;
+}

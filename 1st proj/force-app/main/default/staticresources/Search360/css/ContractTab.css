@@ -1,0 +1,36 @@
+	
+	
+		#contractStyle .objects{
+			border-top: 4px solid #66895F;
+			border-right: 2px solid #66895F;
+			border-bottom: 2px solid #66895F;
+		}
+		#contractStyle .pagSize{
+			text-align: right; 
+			padding: 2px; 
+			color: #66895F;
+			font-weight:bold;
+		}
+		#contractStyle .paginator{
+			border-bottom: 1px solid #66895F;
+			border-top: 1px solid #66895F;
+			text-align:center;
+		}
+		#contractStyle .paginator a{
+			color:#66895F !important;
+			font-weight:bold;
+		}
+		#contractStyle .jumpToPage{
+			position:absolute;
+			right:10px;
+			top:8px;
+			color: #66895F;
+			font-weight:bold;
+		}
+		#contractStyle .counter{
+			position:absolute;
+			left:0px;
+			top: 12px;
+			color:#66895F;
+			font-weight:bold;
+		}	

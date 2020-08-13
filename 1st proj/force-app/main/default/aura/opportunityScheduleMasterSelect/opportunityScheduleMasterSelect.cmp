@@ -1,0 +1,44 @@
+<aura:component implements="force:hasRecordId,lightning:isUrlAddressable" controller="OpportunitySchedulesController">
+    
+    <aura:attribute name="progName" type="String"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="data" type="OpportunitySchedulesController.OpportunityWrapper[]"/>
+	<aura:attribute name="done" type="Boolean" default="false"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    
+    <!-- SPINNER -->
+    <div aura:id="spinner" class="spinnerHolder">
+        <aura:if isTrue="{!v.done}">
+            <aura:set attribute="else">
+                <lightning:spinner variant="brand" alternativeText="Working"/>
+            </aura:set>
+        </aura:if>
+    </div>
+    <!-- / SPINNER -->
+    
+    <!-- HEADER -->
+    <c:opportunityHeader recordId="{!v.recordId}" progName="{!v.progName}" title="Maintain Schedules" detail="Select a master opportunity."/>
+    <!-- / HEADER -->
+    
+    <!-- BODY -->
+    <div style="height: 400px">
+        <lightning:datatable
+        	aura:id="datatable"
+            columns="{!v.columns}"
+            data="{!v.data}"
+            keyField="id"
+            maxRowSelection="1"/>
+    </div>
+    <!-- / BODY -->
+    
+    <!-- FOOTER -->
+    <div class="slds-docked-form-footer slds-is-relative">
+    	<div class="slds-grid slds-grid_align-center">
+    		<lightning:button label="Cancel" title="Cancel" name="cancel" onclick="{!c.handleClick}"/>
+        	<lightning:button variant="brand" label="Next" title="Next" name="next" onclick="{!c.handleClick}" />
+    	</div>
+    </div>
+    <!-- / FOOTER -->
+    
+</aura:component>

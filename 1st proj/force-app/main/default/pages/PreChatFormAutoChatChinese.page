@@ -1,0 +1,184 @@
+<apex:page showHeader="false" controller="PreChatCheckController" title="欢迎使用恩智浦在线聊天">
+<script type="text/javascript" src='https://c.la1-c1cs-cdg.salesforceliveagent.com/content/g/js/44.0/prechat.js'></script>    
+
+<!-- This script takes the endpoint URL parameter passed from the deployment page and makes it the action for the form -->
+<script type='text/javascript'> 
+    function chatPreInitCheckAndSubmit(Object) {
+        var firstNameFound=0;
+        var lastNameFound=0;
+        var emailFound=0;  
+        var fName;
+        var lName;
+        var emailId;
+        for (var i = 0; i < Object.customDetails.length; i++) {
+            if (Object.customDetails[i].label == 'firstName' && Object.customDetails[i].value !='') {
+                firstNameFound=1;
+                fName=Object.customDetails[i].value;
+                document.getElementById("firstName").value = Object.customDetails[i].value;
+            }
+            if (Object.customDetails[i].label == 'lastName' && Object.customDetails[i].value !='') {
+                lastNameFound=1;
+                lName=Object.customDetails[i].value;
+                document.getElementById("lastName").value = Object.customDetails[i].value;
+            }
+            if (Object.customDetails[i].label == 'email' && Object.customDetails[i].value !='') {
+                emailFound=1;
+                emailId=Object.customDetails[i].value;
+                document.getElementById("email").value = Object.customDetails[i].value;
+            }
+        }
+        if(firstNameFound==1 && lastNameFound==1 && emailFound==1){
+            try{
+                //document.getElementById("dataRetentionConsent").checked=true;
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.PreChatCheckController.findOrCreateContactForLoggedInUser}', 
+                    emailId,
+                    fName,
+                    lName,
+                    "",
+                    "", 
+                    function(result, event){
+                        if (event.status){
+                            console.log(result);
+                            //setName();
+                            //document.getElementById("prechatForm").submit();
+                            return true;
+                        } 
+                    }, 
+                    {escape: false}
+                );
+            }catch(ex){
+                console.log(ex.message);
+                console.log(ex);
+                return false;
+            }            
+        } 
+    } 
+(function() {
+    function handlePageLoad() {
+        var endpointMatcher = new RegExp("[\\?\\&]endpoint=([^&#]*)");
+        var domainMatcher = new RegExp("^(https?:\\/\\/(.+?\\.)?(salesforce|salesforceliveagent)\\.com(\\/[A-Za-z0-9\\-\\._~:\\/\\?#\[\\]@!$&'\\(\\)\*\\+,;\\=]*)?)");
+
+        var endpointAttr = endpointMatcher.exec(document.location.search)[1];
+        // if the endpoint domain is valid
+        console.log('new url '+decodeURIComponent(endpointAttr));
+        var tgtURL = decodeURIComponent(endpointAttr);    
+        var tgtURLsplit = tgtURL.split("/",3);
+        var tgtURLresult = tgtURLsplit[2]; 
+        var finalURL = 'https://'+tgtURLresult+'/chat';            
+        if (domainMatcher.test(decodeURIComponent(endpointAttr))) {
+            document.getElementById('prechatForm').setAttribute('action',
+                decodeURIComponent(endpointAttr.replace("javascript:", "")));
+        } else {
+            // invalid endpoint domain, set the action to empty
+            console.error("invalid domain: " + endpointAttr);
+            document.getElementById('prechatForm').setAttribute('action', "");
+        }
+        liveagent.details.preChatInit(finalURL, 'chatPreInitCheckAndSubmit');
+    }
+    if (window.addEventListener) {
+        window.addEventListener('load', handlePageLoad, false);
+    } else {
+        window.attachEvent('onload', handlePageLoad, false);
+    }
+})();
+</script>
+<style type="text/css">
+h1{font-size:100%;font-weight: bold;text-indent:1px;text-align:center}
+h2{font-size:80%;text-indent:0px;text-align:center;color:#D71629}
+body{ font-weight: bold;text-indent:0px;text-align:left;font-size:100%;border-style:solid;
+ border-width:1px;}
+legend {font-size:150%}
+fieldset {border: 1px solid;padding: 1em;font:80%/1 sans-serif}
+label {float:left;width:25%;margin-right:2.5em;padding-top:0.2em;text-align:left;font-weight:bold;font-size:100%}
+#prechat_submit {border-top:        2px solid #a3ceda;
+    border-left:        4px solid #000000;
+    border-right:       4px solid #000000;
+    border-bottom:      4px solid #000000;
+    padding:        10px 20px !important;
+    font-size:      14px !important;
+    background-color:   #DCDCDC;
+    font-weight:        bold;
+    color:          #000000;
+}
+</style>
+<apex:image url="{!$Resource.NXPLogo}"  style="centre" /><br/><br/>    
+
+<!-- Form that gathers information from the chat visitor and sets the values to Live Agent Custom Details used later in the example -->
+<form method='post' id='prechatForm'  onsubmit="return validateForm();">
+    <fieldset id ="Please enter following information">
+    <legend>欢迎使用恩智浦在线聊天</legend>
+    <input type='hidden' name='liveagent.prechat:ContactFirstName' id='firstName' /><br />
+    <input type='hidden' name='liveagent.prechat:ContactLastName' id='lastName' /><br />
+    <input type='hidden' name='liveagent.prechat:LiveChatButton' id='buttonName' value="Auto Chat" /><br />
+    <label for="email"> 请提供您的电邮地址 * </label> <input type='text' name='liveagent.prechat:ContactEmail' id='email' /><br /><br/><br/>
+    <!-- Used to set the visitor's name for the agent in the Console -->
+    <input type="hidden" name="liveagent.prechat.name" id="prechat_field_name" />
+    <!-- map: Use the data from prechat form to map it to the Salesforce record's fields -->
+
+   
+
+    
+<!-- doFind, doCreate and isExactMatch example for a Contact: 
+    Find a contact whose Email exactly matches the value provided by the customer in the form 
+    If there's no match, then create a Contact record and set it's First Name, Last Name, Email, and Phone to the values provided by the customer -->
+    <input type="hidden" name="liveagent.prechat.findorcreate.map:Contact" value="FirstName,ContactFirstName;LastName,ContactLastName;Email,ContactEmail;" />   
+    <input type="hidden" name="liveagent.prechat.findorcreate.map.doFind:Contact" value="Email,true" />
+    <input type="hidden" name="liveagent.prechat.findorcreate.map.isExactMatch:Contact" value="Email,true" />
+    <input type="hidden" name="liveagent.prechat.findorcreate.map.doCreate:Contact" value="FirstName,true;LastName,true;Email,true;" />
+   
+    <input type="hidden" name="liveagent.prechat.save:ContactLastName" value="Last_Name__c" />
+ 	<input type="hidden" name="liveagent.prechat.save:ContactFirstName" value="First_Name__c" />
+    <input type="hidden" name="liveagent.prechat.save:ContactEmail" value="Email__c" />
+        
+    <input type= "hidden" name="liveagent.prechat.findorcreate.linkToEntity:Account" value="Contact,AccountId" />
+<!-- showOnCreate: Open the Contact and Case records as sub-tabs to the chat for the agent in the Console -->
+    <input type="hidden" name="liveagent.prechat.findorcreate.showOnCreate:Contact" value="true" />
+<!-- saveToTranscript: Associates the records found / created, i.e. Contact and Case, to the Live Chat Transcript record. --> 
+    <input type="hidden" name="liveagent.prechat.findorcreate.saveToTranscript:Contact" value="ContactId" />
+
+    <input type='button' value='开始聊天' id='prechat_submit' onclick="setName()"/><br /><br/><br/>
+        <p>我们将在30天内保留您的询问内容，和/或必要时根据 <a href="https://www.nxp.com/cn/about/about-nxp/about-nxp/privacy:PRIVACYPRACTICES?lang=cn&lang_cd=zh-Hans&" target="_blank">恩智浦隐私政策</a>处理您的聊天数据.
+        </p>
+<!-- Set the visitor's name for the agent in the Console to first and last name provided by the customer -->
+<script type="text/javascript">
+ function validateForm(){
+        var emailIdOfUSer =  document.getElementById("email").value;  
+        var emailPattern = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if(emailIdOfUSer.trim()==''){
+            alert("请输入有效的电邮账号");
+            return false;   
+        } 
+        if(!emailPattern.test(emailIdOfUSer)){
+            alert("请输入有效的电邮账号");
+            return false;           
+        }
+        document.getElementById("prechat_field_name").value =  
+            document.getElementById("firstName").value + " " + document.getElementById("lastName").value;       
+   } 
+   function setName() {
+       
+    var emailPattern = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    var emailIdOfUSer =  document.getElementById("email").value;  
+    if(emailIdOfUSer.trim()==''){
+        alert("Please enter email Id for chat");
+        return false;   
+    }
+       if(!emailPattern.test(emailIdOfUSer)){
+        alert("Please enter a valid email Id for chat");
+        return false;           
+       }
+
+        
+    document.getElementById("prechat_field_name").value =  
+        document.getElementById("firstName").value + " " + document.getElementById("lastName").value;
+       document.getElementById("prechatForm").submit();
+    }
+</script>
+
+<style type="text/css">
+p {font-weight: bolder }
+</style>
+</fieldset>
+</form>
+</apex:page>

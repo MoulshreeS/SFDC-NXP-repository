@@ -1,0 +1,109 @@
+/* login box */
+
+.box-center {
+    clear: left;
+    margin: 60px 0 60px 60px;
+    padding: 20px;
+    width: 470px;
+}
+
+.box-shadow {
+	box-shadow: 0 0 5px #666;
+	-moz-box-shadow: 0 0 5px #666;
+	-webkit-box-shadow: 0 0 5px #666;
+}
+
+.grey-gradient {
+	background: #ffffff; /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none'
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSI1NiUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjY2JjY2NkIiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==);			
+	*/
+	background: -webkit-linear-gradient(top, #ffffff 56%,#cbcccd 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #ffffff 56%,#cbcccd 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #ffffff 56%,#cbcccd 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #ffffff 56%,#cbcccd 100%); /* W3C */		
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(56%,#ffffff), color-stop(100%,#cbcccd)); /* Chrome,Safari4+ */
+	background: -moz-linear-gradient(top, #ffffff 56%, #cbcccd 100%); /* FF3.6+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#cbcccd',GradientType=0 ); /* IE6-8 */		
+}
+
+input[type="text"], input[type="password"] {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555555;
+    display: inline-block;
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+    margin-bottom: 9px;
+    padding: 4px 6px;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    width: 200px;
+}
+
+input, select, textarea {
+    border: 1px solid #ccc;
+    color: #fff;
+}
+
+.template {
+    display: none !important;
+}
+
+.arrow-blue {
+    background: url("../img/arrows.png") no-repeat scroll left -197px rgba(0, 0, 0, 0);
+    padding: 0 0 0 12px;
+}
+
+.submit-btn input {
+    float: right;
+    height: 30px !important;
+    width: auto;
+}
+
+.my-btn-green {
+    background-color: #c1c123;
+    background-image: linear-gradient(to bottom, #c1c123 0%, #c1c123 50%, #9f9f01 100%);
+    border: 1px solid #9f9f01;
+    color: #ffffff;
+}
+
+.my-btn:hover, .my-btn:focus {
+    background-position: 0 -15px;
+    color: #313233;
+    text-decoration: none;
+    transition: background-position 0.1s linear 0s;
+}
+
+.my-btn-green:hover, .my-btn-green:focus, .my-btn-green:active, .my-btn-green.active, .my-btn-green.disabled, .my-btn-green[disabled] {
+    background-color: #9f9f01;
+    color: #ffffff;
+}
+
+label {
+    border: medium none;
+    color: #000;
+}
+
+.nxp-red {
+    color: #d20300;
+}
+
+.submit-btn {
+    overflow: hidden;
+    width: 100%;
+}
+.my-btn {
+    background-repeat: repeat-x;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 0;
+    padding: 4px 12px;
+    text-align: center;
+    vertical-align: middle;
+}

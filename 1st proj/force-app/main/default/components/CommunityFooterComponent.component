@@ -1,0 +1,75 @@
+<!--***************************************************************************************************
+@Modified By :       Amrutha
+@Modified Date:      29 Apr 2016
+@Description:        Commented search function for all pages in footer
+*******************************************************************************************************-->
+
+<apex:component >
+<div class="bar">
+        <div class="container">
+            <div class="row no-margin">
+                <div class="col-md-12 col-xs-12">
+                    <a href="/"><img src="{!URLFOR($Resource.Forum_Community_3,'NXP-community/img/logo-nxp.svg')}" onerror="this.onerror=null; this.src='{!URLFOR($Resource.Forum_Community_3,'NXP-community/img/logo-nxp.png')}'" alt="NXP Semiconductors" class="logo-nxp pull-left" /></a><span class="payoff">Secure connections for a smarter world</span>
+                   <form class="form-horizontal pull-right search " action="http://www.nxp.com/search">
+	                        <div class="form-group">
+                                <!--<div class="input-group">
+	                                <input type="text" name="q" class="form-control input-lg search-box" placeholder="Search nxp.com" /><i class="fa fa-close"></i>
+	                                <button class="input-group-addon submitform" type="submit"><i class="fa fa-search"></i></button>
+	                                
+                                </div>-->
+	                        </div>
+	                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="arrow-top"><img src="{!URLFOR($Resource.Forum_Community_3,'NXP-community/img/arrow-top.svg')}" onerror="this.onerror=null; this.src='{!URLFOR($Resource.Forum_Community_3,'NXP-community/img/arrow-top.png')}'" /></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="content">
+                        <h3>NXP Careers</h3>
+                        <ul>
+                            <li><a href="http://www.nxp.com/careers/working-at-NXP.html">Working at NXP</a></li>
+                            <li><a href="http://careers.peopleclick.com/careerscp/client_nxp/external/en/search.do" target="_blank">View job openings</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="content">
+                        <h3>NXP News</h3>
+                        <ul>
+                            <li><a href="http://www.nxp.com/news/press-releases.html">Press releases</a></li>
+                            <li><a href="http://www.nxp.com/news/news-archive.html">News</a></li>
+                            <li><a href="http://blog.nxp.com/" target="_blank">Blog</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="content">
+                        <h3>Investors</h3>
+                        
+                        <ul class="investors-menu">
+                            <li><a href="http://investors.nxp.com/">Investors home</a></li>
+                            <li><a href="http://investors.nxp.com/phoenix.zhtml?c=209114&p=irol-EventDetails&EventId=5206564">Financial results</a></li>
+                            <li><a href="http://investors.nxp.com/phoenix.zhtml?c=209114&p=irol-contact">Contacts</a></li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="content">
+                        <h3>Follow us</h3>
+                        <ul class="follow-us">
+                            <li><a href="http://response.nxp.com/biweekly-enewsletter-subscription" target="_blank"><i class="fa fa-envelope-square"><!--_--></i></a></li>
+                            <li><a href="http://twitter.com/NXP" target="_blank"><i class="fa fa-twitter-square"><!--_--></i></a></li>
+                            <li><a href="http://www.linkedin.com/company/nxp-semiconductors" target="_blank"><i class="fa fa-linkedin-square"><!--_--></i></a></li>
+                            <li><a href="/news/receive-news/rss-feeds.html"><i class="fa fa-rss-square"><!--_--></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</apex:component>

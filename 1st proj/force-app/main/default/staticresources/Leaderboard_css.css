@@ -1,0 +1,134 @@
+#leaderBoard{
+	
+        padding: 10px;
+        box-shadow: 0px 0px 5px black;
+        border-radius: 10px;
+        margin-left: 10px;
+        height: 100%;
+        width: 300px;
+        background: rgba(255, 255, 255, .85);
+        float: right;
+
+
+
+    }
+    #leaderBoardContainer{
+        box-shadow: inset 0 0 4px black;
+        border-radius: 10px;
+        background: url(/Public/resource/1346433720000/ActivisionCommentBkg);
+        width: 100%;
+        height: 100%;
+        overflow:hidden;
+ #communityWrap{
+        float:left;
+        padding-bottom: 45px;
+        min-height: 1000px;
+    }
+    #contentWrap{
+        width:1200px;
+        margin:0pt auto;
+    }
+    #featuredArticles{
+        padding: 10px;
+        box-shadow: 0px 0px 5px black;
+        border-radius: 10px;
+        margin-left: 10px;
+        margin-top:10px;
+        height: 200px;
+        width: 300px;
+        background: rgba(255, 255, 255, .85);
+        float: left;
+    }
+    #articleContainer{
+        box-shadow: inset 0 0 4px black;
+        border-radius: 10px;
+        background: url(/Public/resource/1346433720000/ActivisionCommentBkg);
+        width: 100%;
+        height: 100%;
+        overflow:hidden;
+        white-space:nowrap; 
+    }
+    #articleContainer li{
+        display:block;
+        padding-bottom: 10px;
+    }
+    #articleContainer ul{
+        display:block;
+        padding:0px;
+        left: -17px;
+        position: relative;
+    }
+    .articlesTitle{
+        top: 15px;
+        position: relative;
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+        text-shadow: 1px 1px 5px black;
+    }
+    #adModule{
+        padding: 10px;
+        box-shadow: 0px 0px 5px black;
+        border-radius: 10px;
+        margin-left: 10px;
+        margin-top:10px;
+        height: 200px;
+        width: 300px;
+        background: rgba(255, 255, 255, .85);
+        float: left;
+    }
+    #adModuleContainer{
+        box-shadow: inset 0 0 4px black;
+        border-radius: 10px;
+        background: url(/Public/resource/1346433720000/ActivisionCommentBkg);
+        width: 100%;
+        height: 100%;
+        overflow:hidden;
+        white-space:nowrap; 
+    }
+    .adImg{
+        top: 22px;
+        left: 10px;
+        position: relative;
+    }   
+    
+    .links{
+        text-overflow:ellipsis;
+        width:275px;
+        color: #81A203;
+        font-size:12px;
+        overflow:hidden;
+        font-weight: normal;
+        text-shadow: 0px 0px 0px;
+    }
+    .links:hover{
+        cursor:pointer;
+        text-decoration:underline;
+    }
+    
+    .leaderPics{
+        border-radius: 5px;
+        border: 1px solid whiteSmoke;
+        height: 40px;
+        width: 40px;
+    }
+    #leaderBoardInfo{
+        height: 100%;
+        width: 90%;
+        margin: 0pt auto;
+        margin-top: 30px;
+        margin-bottom:10px;
+    }
+    #leaderBoardInfo .textInfo{
+        padding: 5px 10px;
+        background: rgba(0, 0, 0, 0.4);
+    }
+     #leaderBoardInfo .textInfo.InfoHeader{
+        color:#81A203;
+        background:transparent;
+        font-weight:bold;
+    }
+     #leaderBoardInfo table{
+         border-spacing:0px 2px;
+         width:100%;
+     }

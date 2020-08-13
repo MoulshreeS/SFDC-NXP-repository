@@ -1,0 +1,1129 @@
+/*********************************************************************************************
+@Created By :      Amit Rajan
+@CreatedDate :     26 June 2016
+Description :      controller class for creating Context (SIR-825)
+*****************************************************************
+Last Modified By:Shridevi
+Last Modified Date:26-Sep-2017
+Description: SIR-524-Implement search and sort functionalities for the cases.
+***********************************************************************
+Last Modified By:Ranganath C N
+Last Modified Date:23-jul-2018
+Description: SFDC-1737-Implement paginationfor folders.
+****************************************************************************************************/
+public without sharing class CommunityContextController{
+
+    public list<Case> listCasesSearch{set;get;}//To save search results
+    public string rend1{set;get;}
+    public integer listsize{get;set;}
+    public String searchText{set;get;}
+    list<case> listcase{get;set;}
+    public String Order{set;get;}
+    public String sortField {set;get;}
+    public Map<Id, List<Case>> entitlementCases                                                    {set;get;}   // to display cases against entitlements
+   // public String currentStep {set;get;}
+    public CommunityContextController parentController                                           {set;get;}
+  //  public Map<ID, case> caseMap                                                                   {set;get;}   // to display case detail 
+    public Map<Id, List<Entitlement_Contact__c>> participantEntitlementContacts                    {set;get;}   // to display participants
+    public Map<Id, List<Entitlement_Contact__c>> observerEntitlementContacts                       {set;get;}   // to display observers
+    public Map<Id, List<Entitlement_Contact__c>> entitlementContacts                               {set;get;}   // to display entitlemet contacts 
+    public Map<Id, boolean> participantInviteSizeEmptyMap                                          {set;get;}   // to display message if there are no participants
+    public Map<Id, boolean> observerinviteSizeEmptyMap                                             {set;get;}   // to display message if there are no observers
+    public Map<Id, Integer> casesPresenceMap {set;get;}
+    public List<Attachment> caseAttachments                                                        {get;set;}   // to capture attachment of the case
+    public Entitlement  currentContext {Set;get;}
+    public List<Entitlement_Contact__c> entitlementContactsList                                    {set;get;}   // to display entitlement contact's list
+   // public List<emailMessage> lstEmailMsgs                                                         {set;get;}
+  //  public List<Attachment>  lstAttachment                                                         {set;get;}
+    public Case caseRecord                                                                         {set;get;}  // to capture case information
+    public Contact objCont                                                                         {set;get;}  // to capture contact information
+    public User userRecord                                                                         {set;get;}   //to get the user's information
+    public integer contextSize {set;get;}
+    public boolean showOthersSection                                                               {set;get;}    // to display Others section only where there are cases associated with it
+    public boolean noContextVar                                                                    {set;get;}
+    Entitlement otherEntitlement = new Entitlement();
+    String contactId;
+    String userRecordId;
+    Set<ID> entitlementIds = new Set<ID>();
+    private String currentEntitlementId;
+    private boolean isError = false;
+    public String errorMessage   {set;get;}
+    public boolean isLightningCommunity;
+    public Id caseIdToDisplay{get;set;}
+    
+    //bhagya
+    public integer CurrentPageNumber {set; get;}
+     public PageReference getPageReference1()
+    {
+    system.debug('start get page reference 1');
+        string communityBaseUrl = Url.getSalesforceBaseUrl().toExternalForm() +'/ncp';
+        return new PageReference(communityBaseUrl);
+        if (UserInfo.getUserType()=='Guest') 
+        {
+            //code-as-is-redirects to old login page
+            //return new PageReference('/communityLogin?pagename=CommunityContextPage');
+            //new -login URLs - based on custom label
+            return new PageReference(Site.getPathPrefix()+Label.Community_Login_URL);
+            
+        }
+        //to get logged in user's information
+        userRecord = [SELECT firstName,LastName,contactId,Contact.Company__c, Contact_ID__c, Contact.Community_web_country__c, Email, accountId from User where id = :UserInfo.getUserId()];
+
+        contactId = userRecord.ContactId;
+        string country=userRecord.Contact.Community_web_country__c;
+        
+        if(String.isBlank(contactId)){
+            if(!String.isBlank(userRecord.Contact_Id__c))
+            {
+            contactId = userRecord.Contact_Id__c;
+            }
+            else{
+              List<Contact> contactRecords = [SELECT id from contact where Email=:userRecord.Email limit 1];
+                if( !contactRecords.isEmpty() ){
+                    
+                    //update the User and Contact records
+                    
+                    userRecord.Contact_Id__c = contactRecords[0].id;
+                    system.debug('@@@@@@@@@@@@@ contact check');
+                }
+                else{
+                    Contact userContact = new Contact( FirstName = userRecord.FirstName,
+                                                       LastName = userRecord.LastName,
+                                                       Email = userRecord.Email,
+                                                       accountId = userRecord.accountId,
+                                                       Community_web_country__c = 'Unknown'
+                                                     );
+                   insert userContact ;
+                   
+                  userRecord.Contact_Id__c = userContact.id;
+                                   }
+                update userRecord;
+                contactId = userRecord.Contact_Id__c;
+                
+            }
+        }
+        /* getEntitlementRecords();
+
+        getEntitlementCaseRecords();
+
+        getEntitlementContactRecords();*/
+        return null;
+       
+    }
+    //Added by ranganath to impliment pagination
+    public integer noOfRecordsToDisplay {set;get;}
+    private integer counter=0;  //keeps track of the offset
+    private integer list_size=9; //sets the page size or number of rows
+    public integer total_size; //used to show user the total size of the list
+    public string selectedPage{get;set{selectedPage=value;}}
+    public static boolean flag = false;
+    
+    //to impliment folders per page in pagination
+    boolean is10ButtonDisabled= true;
+    boolean is20ButtonDisabled= false;
+    boolean is50ButtonDisabled= false;
+   // boolean is100ButtonDisabled= false;
+
+    public pageReference showRecords(){
+        is10ButtonDisabled= true;
+        is20ButtonDisabled= false;
+        is50ButtonDisabled= false;
+      //  is100ButtonDisabled= false;
+        list_size=noOfRecordsToDisplay;
+        flag = true ;
+        getEntitlementRecords();
+        getEntitlementCaseRecords();
+        getEntitlementContactRecords();
+        return null;
+   }
+   public pageReference showRecords20(){
+        is10ButtonDisabled= false;
+        is20ButtonDisabled= true;
+        is50ButtonDisabled= false;
+     //   is100ButtonDisabled= false;
+        list_size=noOfRecordsToDisplay;
+        flag = true ;
+        getEntitlementRecords();
+        getEntitlementCaseRecords();
+        getEntitlementContactRecords();
+        return null;
+   }
+    public pageReference showRecords50(){
+        is10ButtonDisabled= false;
+        is20ButtonDisabled= false;
+        is50ButtonDisabled= true;
+     //   is100ButtonDisabled= false;
+        list_size=noOfRecordsToDisplay;
+        flag = true ;
+        getEntitlementRecords();
+        getEntitlementCaseRecords();
+        getEntitlementContactRecords();
+        return null;
+   }
+   /** public pageReference showRecords100(){
+        is10ButtonDisabled= false;
+        is20ButtonDisabled= false;
+        is50ButtonDisabled= false;
+      //  is100ButtonDisabled= true;
+        list_size=noOfRecordsToDisplay;
+        flag = true ;
+        getEntitlementRecords();
+        getEntitlementCaseRecords();
+        getEntitlementContactRecords();
+        return null;
+   }**/
+   public boolean getIs10ButtonDisabled() {
+        return is10ButtonDisabled;
+    }
+    public boolean getIs20ButtonDisabled() {
+        return is20ButtonDisabled;
+    }
+    public boolean getIs50ButtonDisabled() {
+        return is50ButtonDisabled;
+    }
+   /** public boolean getIs100ButtonDisabled() {
+        return is100ButtonDisabled;
+    }**/
+
+   public Component.Apex.pageBlockButtons getMyCommandButtons() {
+       
+        //the reRender attribute is a set NOT a string
+        Set<string> theSet = new Set<string>();
+        theSet.add('myPanel');
+        theSet.add('myButtons');
+                
+        integer totalPages;
+        if (math.mod(total_size, list_size) > 0) {
+            totalPages = total_size/list_size + 1;
+        } else {
+            totalPages = (total_size/list_size);
+        }
+        
+        integer currentPage;        
+        if (selectedPage == '0') {
+            currentPage = counter/list_size + 1;
+            system.debug('current page """""""""""""""""""""""""""""""""""""'+currentPage );
+        } else {
+            currentPage = integer.valueOf(selectedPage);
+             system.debug('current page """""""""""""""""""""""""""""""""""""111111'+currentPage );
+        }
+         CurrentPageNumber =currentPage ;
+        Component.Apex.pageBlockButtons pbButtons = new Component.Apex.pageBlockButtons();        
+        pbButtons.location = 'top';
+        pbButtons.id = 'myPBButtons';
+        
+        Component.Apex.outputPanel opPanel = new Component.Apex.outputPanel();
+        opPanel.id = 'myButtons';
+                                
+        //the Previous button will alway be displayed
+        Component.Apex.commandButton b1 = new Component.Apex.commandButton();
+        b1.expressions.action = '{!Previous}';
+        b1.title = 'PreviousPage';
+        b1.value = '<';
+        b1.expressions.disabled = '{!disablePrevious}';        
+        b1.reRender = theSet;
+        b1.onclick = 'queryByprevPage(\''+string.valueOf(0)+'\');return false;';
+        opPanel.childComponents.add(b1);        
+                        
+        for (integer i=0;i<totalPages;i++) {
+            Component.Apex.commandButton btn = new Component.Apex.commandButton();
+            
+            if (i+1==1) {
+                btn.title = '1';
+                btn.value = '1';
+                btn.rendered = true;                                        
+            } else if (i+1==totalPages) {
+                btn.title = 'LastPage';
+                btn.value = totalPages;
+                btn.rendered = true;                            
+            } else {
+                btn.title = 'Page ' + string.valueOf(i+1) + ' ';
+                btn.value = ' ' + string.valueOf(i+1) + ' ';
+                btn.rendered = false;             
+            }
+            
+            if (   (i+1 <= 5 && currentPage < 5)
+                || (i+1 >= totalPages-4 && currentPage > totalPages-4)
+                || (i+1 >= currentPage-2 && i+1 <= currentPage+2))
+            {
+                btn.rendered = true;
+            }
+                                     
+            if (i+1==currentPage) {
+                btn.disabled = true; 
+                btn.style = 'color:blue;';
+            }  
+            
+            btn.onclick = 'queryByPage(\''+string.valueOf(i+1)+'\');return false;';
+                 
+            opPanel.childComponents.add(btn);
+            
+            if (i+1 == 1 || i+1 == totalPages-1) { //put text after page 1 and before last page
+                Component.Apex.outputText text = new Component.Apex.outputText();
+                text.value = '...';        
+                opPanel.childComponents.add(text);
+            } 
+             
+        }
+        
+      
+        //the Next button will alway be displayed
+        Component.Apex.commandButton b2 = new Component.Apex.commandButton();
+        //b2.expressions.action = '{!Next}';
+        b2.title = 'NextPage';
+        b2.value = '>';
+        b2.expressions.disabled = '{!disableNext}';        
+        b2.reRender = theSet;
+        system.debug('next listsize'+list_size);
+        b2.onclick = 'queryByNextPage(\''+string.valueOf(0)+'\');return false;';
+        opPanel.childComponents.add(b2);
+        //add all buttons as children of the outputPanel                
+        pbButtons.childComponents.add(opPanel);  
+        return pbButtons;
+
+    }   
+    
+     public PageReference refreshGrid() { //user clicked a page number   
+         system.debug('refreshgrid select key value'+selectedPage);
+         
+         //added to track the current page-bhagya
+         ApexPages.currentPage().getParameters().put('currentPageNum',selectedPage); 
+            
+         getEntitlementRecords();
+         getEntitlementCaseRecords();
+         getEntitlementContactRecords();
+         system.debug('**** ' + selectedPage);
+         
+         return null;
+    }
+    public PageReference refreshnext() { //user clicked a page number  
+         selectedPage = '0';
+         counter += list_size; 
+         system.debug('refreshnext counter'+counter);
+         getEntitlementRecords();
+         getEntitlementCaseRecords();
+         getEntitlementContactRecords();
+         system.debug('**** ' + selectedPage);
+         return null;
+    }
+    
+     public PageReference refreshprevious() { //user clicked a page number  
+         selectedPage = '0';
+         counter -= list_size; 
+         system.debug('refreshprevious counter'+counter);
+         getEntitlementRecords();
+         getEntitlementCaseRecords();
+         getEntitlementContactRecords();
+         system.debug('**** ' + selectedPage);
+         return null;
+    }
+    
+   /** public PageReference Previous() { //user clicked previous button
+    
+        selectedPage = '0';
+        counter -= list_size;
+        getEntitlementRecords();
+         getEntitlementCaseRecords();
+         getEntitlementContactRecords();
+        return null;
+    }
+
+    public PageReference Next() { //user clicked next button
+   
+        selectedPage = '0';
+        counter += list_size;
+        system.debug('next counter'+counter);
+         getEntitlementRecords();
+         getEntitlementCaseRecords();
+         getEntitlementContactRecords();
+        return null;
+    }
+**/
+    public PageReference End() { //user clicked end
+        selectedPage = '0';
+        counter = total_size - math.mod(total_size, list_size);
+        return null;
+    }
+    
+    public Boolean getDisablePrevious() { //this will disable the previous and beginning buttons
+        if (counter>0) return false; else return true;
+    }
+
+    public Boolean getDisableNext() { //this will disable the next and end buttons
+        if (counter + list_size < total_size) return false; else return true;
+    }
+
+    public Integer getTotal_size() {
+        return total_size;
+    }
+    
+    public Integer getPageNumber() {
+        return counter/list_size + 1;
+    }
+    
+    public Integer getTotalPages() {
+        if (math.mod(total_size, list_size) > 0) {
+            return total_size/list_size + 1;
+        } else {
+            return (total_size/list_size);
+        }
+    } 
+    //till here added by ranganath to impliment pagination
+    
+    public CommunityContextController(){
+   
+        //added by ranganath
+        noOfRecordsToDisplay=1;
+        if(ApexPages.currentPage().getParameters().get('currentPageNum') != null)
+       CurrentPageNumber =  Integer.valueOf(ApexPages.currentPage().getParameters().get('currentPageNum'));
+         selectedPage='0'; 
+         //till here
+        
+    system.debug('>>>>>>>>>>apexpage()::'+ApexPages.currentPage().getUrl()); ///apex/CommunityContextPage
+    listsize=0;
+    listcase=new list<Case>();
+    // rend1=false;
+    listCasesSearch=new list<case>();
+    sortfield='entitlement.name';
+    Order='ASC';
+    if (UserInfo.getUserType()!='Guest')
+    {
+      // currentStep = 'step1';
+      isLightningCommunity = false;
+      String pageUrl = ApexPages.currentPage().getUrl();
+      
+      if(String.isNotBlank(pageUrl) && pageUrl.contains('CommunityContextPage_cloneL')){
+          
+          isLightningCommunity = true;
+      }
+      else{
+          
+          isLightningCommunity = false;
+      }
+      noContextVar = false;
+      parentController= this;
+       currentEntitlementId = ApexPages.currentPage().getParameters().get('entitlementId');
+       deleteContext = 'no';
+        if(!String.isBlank(currentEntitlementId))
+        currentcontext = [SELECT name, createdBy.Name from Entitlement where Id =: currentEntitlementId];
+        showOthersSection = true;
+       
+        //initialization of variables
+      //  caseMap = new Map<Id, case>();
+   
+        caseAttachments = new List<Attachment>();
+
+        
+        caseAttachments.add(new Attachment());
+        caseAttachments.add(new Attachment());
+        caseAttachments.add(new Attachment());
+        caseAttachments.add(new Attachment());
+        caseAttachments.add(new Attachment());
+        
+        entitlementContactsList  = new List<Entitlement_Contact__c>();
+
+        entitlementCases  = new Map<Id, List<case>>();
+        objCont = new Contact();
+
+        caseRecord = new Case();
+        
+        //to get logged in user's information
+        userRecord = [SELECT firstName,contactId,Contact.Company__c, Contact_ID__c, Contact.Community_web_country__c, Email, accountId from User where id = :UserInfo.getUserId()];
+
+        contactId = userRecord.ContactId;
+        userRecordId = userRecord.id;
+        
+        if(String.isBlank(contactId)){
+            
+            contactId = userRecord.Contact_Id__c;
+        }
+        getEntitlementRecords();
+
+        getEntitlementCaseRecords();
+
+        getEntitlementContactRecords();
+
+        
+        caseRecord.Status = 'New';
+        
+       // assignCaseRecord();
+       
+       }
+       
+       //added by ranganath     
+            total_size = [select count() from Entitlement_Contact__c        
+            WHERE Status__c != :CommunityConstantsUtility.REJECTED_STATUS       
+           AND contact__c = :contactId ]; //set the total size in the constructor
+           
+            //added by bhagya start
+            String currentPage='1';
+            if(ApexPages.currentPage().getParameters().get('currentPageNum') != null)
+                currentPage = ApexPages.currentPage().getParameters().get('currentPageNum');
+         
+          if (currentPage== null || currentPage == '') {
+                currentPage='1';
+                 selectedPage=currentPage;
+                CurrentPageNumber = integer.valueOf(currentPage);
+                 
+            } else {
+         selectedPage=currentPage;
+         getEntitlementRecords();
+         getEntitlementCaseRecords();
+         getEntitlementContactRecords();
+       
+         }
+                          
+
+    }
+     
+    public String deleteContext   {set;get;}
+     /*
+    * @name         : createCaseRecord
+    * @description  : to create the Case and insert attachment
+    * @ Input param : Null
+    * @ return type : PageReference
+    */
+   
+    public PageReference updateContextName(){
+      system.debug('In updateContextName start'+CurrentPageNumber);
+       currentEntitlementId= ApexPages.currentPage().getParameters().get('entitlementId');
+      
+       // currentContext = new Entitlement(Id = currentEntitlementId ); 
+       if(deleteContext.equalsIgnoreCase('no')){
+           
+           update  currentContext;
+           sendCaseCreateNotification([select Id, Subject, Body from EmailTemplate where DeveloperName = 'NXPCommunityContextRenameNotification']);
+       
+       }
+       else{
+           delete currentContext;
+           sendCaseCreateNotification([select Id, Subject, Body from EmailTemplate where DeveloperName = 'NXPCommunityContextDeleteNotification']);
+       
+       
+       }
+       PageReference pg = Page.CommunityContextPage;
+       String curPage=String.valueOf(CurrentPageNumber);
+       pg.getParameters().put('currentPageNum', curPage);
+       pg.setRedirect(true);
+       return pg;
+    }
+  
+    public void createCaseRecord(){
+        
+        System.debug('%%%CASE');
+   
+        isError = false;        
+        errorMessage ='';
+        currentEntitlementId= ApexPages.currentPage().getParameters().get('entitlementId');
+        caseRecord.entitlementId = currentEntitlementId;
+        caseRecord.origin = 'Self Service Portal';
+        System.debug('%%%Entitlement'+currentEntitlementId);
+        
+        caseRecord.contactId = contactId;
+      /*  if( !String.isBlank(userRecord.contactID) )
+         caseRecord.contactId = userRecord.contactId;
+        else
+        {
+            caseRecord.ContactId = userRecord.Contact_Id__c;
+        } */
+        
+        if( !String.isBlank(userRecord.Contact.Company__c))
+        caseRecord.Company__c = userRecord.Contact.Company__c;
+        
+        if( !String.isBlank(userRecord.Contact.Community_web_country__c)){
+            caseRecord.Community_web_country__c = userRecord.Contact.Community_web_country__c;
+        }
+     //   try{ 
+            insert caseRecord;
+            
+            if(caseRecord!=NULL) {
+                 caseIdToDisplay = caseRecord.Id;
+            }
+            
+            sendCaseCreateNotification([select Id, Subject, Body from EmailTemplate where DeveloperName = 'NXPCommunityCaseCreateNotification']);
+      /*  }
+        catch(Exception e){
+                isError = true;
+                errorMessage =  Label.CommunityCaseErrorMessage;
+        
+       }*/
+        
+        List<Attachment> attachments = new List<Attachment>();
+        for(Attachment caseAttachment : caseAttachments){
+            if(caseAttachment.body != null){
+                caseAttachment.parentId = caseRecord.id;
+                attachments.add(caseAttachment);
+            
+            }
+        }
+        
+        if(!attachments.isEmpty()){
+               
+            try{
+                Database.insert(attachments);
+                
+               
+            }
+            catch(Exception e){
+                isError = true;
+                errorMessage =  Label.CommunityAttachmentInsertError;
+        
+            }
+        }
+        
+        System.debug('%%%Entitlement'+caseRecord.id);
+        
+        
+    }
+    public void addAttachment(){
+        
+        caseAttachments.add(new Attachment());
+        caseAttachments.add(new Attachment());
+    }
+    /*
+    * @name         : saveCaseNewRecord
+    * @description  : to create the Case and return case new page
+    * @ Input param : Null
+    * @ return type : PageReference
+    */
+   
+     public PageReference saveCaseNewRecord(){
+        //currentStep  ='step2';
+        createCaseRecord();
+        
+        if( !isError ){
+            
+            PageReference pg = Page.CommunityNXPCreateContextWizard;
+            pg.getParameters().put('caseId',caseRecord.id);
+            pg.setRedirect(true);
+            return pg;
+         }
+        
+         
+      return null;
+        
+        
+    }
+    
+    /*
+    * @name         : saveCaseDetailRecord
+    * @description  : to create the Case and return case detail page
+    * @ Input param : Null
+    * @ return type : PageReference
+    */
+    public PageReference saveCaseDetailRecord(){ 
+        
+        createCaseRecord();
+       
+        if( !isError ){ 
+        //PageReference pg = new PageReference('/CommunityNXPCaseDetail?caseId='+caseRecord.id);
+        PageReference pg = Page.CommunityNXPCaseDetail;// communityPageToRedirectCaseDetail;
+        pg.getParameters().put('caseId',caseRecord.id);
+         String curPage=String.valueOf(CurrentPageNumber);
+       pg.getParameters().put('currentPageNum', curPage);
+        pg.setRedirect(true);
+        return pg; 
+        }
+     
+        return null;
+    }
+    /*
+    * @name         : saveCaseRecord
+    * @description  : to create the Case record entitlement
+    * @ Input param : Null
+    * @ return type : PageReference
+    */
+    public PageReference saveCaseRecord(){
+        
+        
+        System.debug('*****'+ApexPages.currentPage().getParameters().get('entitlementId'));
+        createCaseRecord();
+      if( !isError ){
+        PageReference pg = Page.CommunityContextPage;
+      
+        return pg;
+        }
+         return null;
+    }
+    
+    
+    
+    /*
+    * @name         : removeEntitlementContact
+    * @description  : to remove participant/observer records who have accepted the request
+    * @ Input param : Null
+    * @ return type : void
+    */
+    public PageReference removeEntitlementContact(){
+    
+        Entitlement_Contact__c eContact = new Entitlement_Contact__c();
+        eContact.id = ApexPages.currentPage().getParameters().get('econtactId');
+        delete eContact;
+        
+        PageReference pg = Page.CommunityContextPage;
+        pg.setRedirect(true);
+        return pg;
+        
+        
+    }
+    /*
+    * @name         : getEntitlementRecords
+    * @description  : to get the entitlement records
+    * @ Input param : Null
+    * @ return type : void
+    */
+    private void getEntitlementRecords(){ 
+         system.debug('2'+' '+list_size);
+           system.debug('refreshgrid select key value CurrentPageNumber'+CurrentPageNumber);
+    entitlementContactsList.clear();
+     system.debug('2test'+flag);
+     system.debug('2test selectedPage '+selectedPage );
+      if(flag == true){
+          counter = 0;
+           system.debug('2counter '+counter );
+                  }
+      else {                                                
+      if (selectedPage != '0') 
+      counter = list_size*integer.valueOf(selectedPage)-list_size;
+           }
+      
+    system.debug('counter'+counter);
+
+       System.debug('Contact ID::'+contactId);
+        for(Entitlement_Contact__c eContact: [SELECT Entitlement__r.Name,Entitlement__r.Entitlement_Pattern__c,Entitlement__r.Additional_Description__c,Entitlement__r.Status, type__c,  Status__c, Entitlement__r.Total_Number_of_Hours__c, Entitlement__r.Type, Entitlement__r.Used_number_of_Hours__c from Entitlement_Contact__c 
+        WHERE Status__c != :CommunityConstantsUtility.REJECTED_STATUS 
+       AND contact__c = :contactId  ORDER BY CreatedDate DESC
+       limit :list_size
+       offset :counter
+        ]){
+            entitlementContactsList.add(eContact);
+        }
+
+        
+        otherEntitlement  = new Entitlement (name=Label.CommunityOthersname, id=CommunityConstantsUtility.DUMMY_ENTITLEMENTID, type =CommunityConstantsUtility.ENTITLEMENT_FREETYPE);
+    
+        
+        entitlementContactsList.add(new Entitlement_Contact__c(Entitlement__r = otherEntitlement, entitlement__c = otherEntitlement.id));
+        
+        System.debug('****'+entitlementContactsList);
+         System.debug('>>>>>>>>>entitlementContactsList::::'+entitlementContactsList);
+        
+        
+        
+    }
+    
+     /*
+    * @name         : acceptEntitlement
+    * @description  : to accept participant/observer records who have accepted the request
+    * @ Input param : Null
+    * @ return type : void
+    */
+    public PageReference acceptEntitlement(){
+        
+        Entitlement_Contact__c eContact = new Entitlement_Contact__c();
+        eContact.id = ApexPages.currentPage().getParameters().get('econtactId');
+        eContact.Status__c = CommunityConstantsUtility.ACCEPTED_STATUS;
+        update eContact;
+        
+         PageReference pg = Page.CommunityContextPage;
+        pg.setRedirect(true);
+        return pg;
+
+    
+    }
+    private void assignCaseRecord(){
+        
+       
+      // Id caseId = ApexPages.currentPage().getParameters().get('caseId');
+      // if(caseId != null && caseMap.containsKey(caseId))
+      // caseRecord = caseMap.get(caseId);
+       
+      // lstEmailMsgs = [Select id,parentid,TextBody,subject,htmlbody,fromaddress,toaddress,createdDate from emailmessage 
+       //                 where parentid=:caseRecord.id order by createddate DESC];
+                        
+       //lstAttachment = [select id,createddate,bodylength,name from Attachment where parentId=:caseRecord.id ];                  
+       
+    }
+    public PageReference rejectEntitlement(){
+        
+        Entitlement_Contact__c eContact = new Entitlement_Contact__c();
+        eContact.id = ApexPages.currentPage().getParameters().get('econtactId');
+        eContact.Status__c = CommunityConstantsUtility.REJECTED_STATUS;
+        update eContact;
+        
+        PageReference pg = Page.CommunityContextPage;
+        pg.setRedirect(true);
+        return pg;
+    
+    }
+    /*
+    * @name         : getEntitlementCaseRecords
+    * @description  : to get the exisitng cases against the entitlement records
+    * @ Input param : Null
+    * @ return type : PageReference
+    */
+    private void getEntitlementCaseRecords(){
+        Set<Id> entitlementIds = new Set<Id>();
+        casesPresenceMap = new Map<Id, Integer>();
+        
+        
+        for(Entitlement_Contact__c entId: entitlementContactsList ){
+            entitlementCases.put(entId.Entitlement__c,new List<Case>());  
+            casesPresenceMap.put(entId.Entitlement__c, 0);
+              if(entId.type__c != null  && (entId.type__c.equalsIgnoreCase(CommunityConstantsUtility.ENTITLEMENTCONTACT_OWNER) || ( !entId.type__c.equalsIgnoreCase(CommunityConstantsUtility.ENTITLEMENTCONTACT_OWNER) &&  entId.Status__c != null && entId.Status__c.equalsIgnoreCase(CommunityConstantsUtility.ACCEPTED_STATUS))))
+              entitlementIds.add(entId.Entitlement__c);
+              
+           
+
+        }
+        
+        if(entitlementContactsList.size() > Integer.valueOf(Label.CommunityTotalContextSize)){
+            
+            contextSize = Integer.valueOf(Label.CommunityHomeContextSecondarySize);
+        }
+        else{
+            contextSize = Integer.valueOf(Label.CommunityHomeContextSize);
+        }
+        
+        
+        //Get the record type Ids with the help of custom label which will be used in the recordType Id filter
+        Set<ID> recordTypeIds = new Set<ID>();
+        
+        if(Label.CommunityCaseRecordType.contains(';')){
+            for(String st: Label.CommunityCaseRecordType.split(';'))
+                recordTypeIds.add(Schema.SObjectType.Case.getRecordTypeInfosByName().get(st).getRecordTypeId());
+        }
+        else{
+            
+            recordTypeIds.add(Schema.SObjectType.Case.getRecordTypeInfosByName().get(Label.CommunityCaseRecordType).getRecordTypeId());
+        }
+        
+        integer otherCounter = contextSize;
+        transient List<case> cseRecords = new List<Case>();
+        system.debug('>>>>>>>>>>>>>isLightningCommunity::::::::'+isLightningCommunity);
+        
+        String soqlQuery = 'SELECT status, subject,origin, createdById,createdDate,EntitlementId, Entitlement.Name, ClosedDate,caseNumber, Product__c, Product_Category__c, Product_Sub__c,'+
+                                  'Product_application__c,Project_Stage__c,Expected_annual_unit_volume__c,Priority ,Sub_Topic__c,description,first_name__c, last_name__c,email__c,phone_number__c,'+
+                                  'community_Web_Country__c,Hours_spent_by_Support_person__c,State_Province__c,Web_Region__c,Nature_of_Question__c,'+
+                                  'company__c,jobtitle__c,Product_Type_Number__c,My_Question_is_Related__c, FeedItemId from Case '+ 
+                                   'where RecordTypeId IN :recordTypeIds AND (origin!=\'Community_Question\')';
+        
+                                   
+        if(isLightningCommunity){
+            
+           soqlQuery += 'AND ContactId!=NULL ';
+        }   
+        soqlQuery+= 'AND (EntitlementId IN :entitlementIds OR'+
+                                   '( FeedItemId = NULL AND EntitlementID = null AND origin!=\'Forum\' AND (createdById =:userRecordId OR  ContactId =:contactId) ) '+
+                                   'OR(FeedItemId != NULL AND EntitlementID != null)) ORDER BY CreatedDate DESC ';
+        
+        system.debug('>>>>>>>>>>>>>soqlQuery::::::::'+soqlQuery);
+        
+        for(Case cse: Database.Query(soqlQuery)) 
+        {
+            
+            if( !String.isBlank(contactId) || (String.isBlank(contactId) && cse.createdById == userRecord.id )){
+            
+            cseRecords = new List<Case>();
+            
+            if(entitlementCases.containsKey(cse.EntitlementId)){
+                cseRecords = entitlementCases.get(cse.EntitlementId);                
+            }
+            if((cse.entitlementId== null && cseRecords.size() < contextSize ) || casesPresenceMap.get(cse.EntitlementId) < contextSize ){
+                cseRecords.add(cse);
+              //  caseMap.put(cse.id,cse);
+                casesPresenceMap.put(cse.EntitlementId, cseRecords.size());
+           }
+            else{
+                
+                if(casesPresenceMap.containsKey(cse.EntitlementId))
+                casesPresenceMap.put(cse.EntitlementId, casesPresenceMap.get(cse.EntitlementId)+1);
+                
+                if(cse.entitlementId== null)
+                otherCounter++;
+            }
+            
+            entitlementCases.put(cse.EntitlementId, cseRecords);
+            }
+            
+
+        }
+
+        if(entitlementCases.containsKey(null)){
+            entitlementCases.put(otherEntitlement.id, entitlementCases.get(null));
+             casesPresenceMap.put(otherEntitlement.id, otherCounter);
+             
+            
+        }
+        else{
+            
+             showOthersSection = false;
+        }
+        system.debug('>>>>>>>>>>>>>>>>>>>>>>>>>casesPresenceMap::'+casesPresenceMap);
+        system.debug('>>>>>>>>>>>>>>>>>>>>>>>>>entitlementCases::'+entitlementCases);
+        system.debug('>>>>>>>>>>>>>>>>>>>>>>>>>entitlementCasesValues::'+entitlementCases.values());
+
+    }
+    
+    /*
+    * @name         : getEntitlementContactRecords
+    * @description  : to get the entitlemment contact records
+    * @ Input param : void
+    * @ return type : void
+    */ 
+    private void getEntitlementContactRecords(){
+        entitlementContacts   = new map<Id,List<Entitlement_Contact__c>>();
+
+        participantEntitlementContacts   = new map<Id,List<Entitlement_Contact__c>>();
+
+        observerEntitlementContacts   = new map<Id,List<Entitlement_Contact__c>>();
+
+        participantentitlementContacts.put(CommunityConstantsUtility.DUMMY_ENTITLEMENTID,new List<Entitlement_Contact__c>());   
+
+        observerentitlementContacts.put(CommunityConstantsUtility.DUMMY_ENTITLEMENTID,new List<Entitlement_Contact__c>());   
+
+        participantinviteSizeEmptyMap    = new Map<Id, Boolean>();
+        observerinviteSizeEmptyMap    = new Map<Id, Boolean>();
+        
+        for(Id entId: entitlementCases.keyset()){
+            entitlementContacts.put(entId,new List<Entitlement_Contact__c>());   
+            participantentitlementContacts.put(entId,new List<Entitlement_Contact__c>());   
+
+            observerentitlementContacts.put(entId,new List<Entitlement_Contact__c>());   
+
+            // inviteSizeEmptyMap.put(entId.id, true);
+            participantInviteSizeEmptyMap.put(entId, true);
+            observerInviteSizeEmptyMap.put(entId, true);
+        }
+
+        List<Entitlement_Contact__c> contactRecords = new List<Entitlement_Contact__c>();
+        List<Entitlement_Contact__c> allcontactRecords = new List<Entitlement_Contact__c>();
+        
+        for(Entitlement_Contact__c cont : [SELECT  Contact__r.Name, Contact__r.Email,Type__c,Status__c, entitlement__c from Entitlement_Contact__c
+        where Entitlement__c IN :entitlementCases.keyset() ORDER BY createdDate, Type__c DESC
+        ]){
+            allcontactRecords  = new List<Entitlement_Contact__c>();
+           
+            if(cont.type__c != null && cont.Type__c.equalsIgnoreCase(CommunityConstantsUtility.PARTICIPANT)){
+                if( participantentitlementContacts.containsKey(cont.Entitlement__c)){
+                    contactRecords = participantentitlementContacts.get(cont.Entitlement__c);                
+                }
+                contactRecords.add(cont);
+                participantentitlementContacts.put(cont.Entitlement__c, contactRecords);
+                if(! contactRecords.isEmpty()){
+
+                    participantinviteSizeEmptyMap.put(cont.Entitlement__c, false);
+                }
+
+            }
+
+            if(cont.type__c !=  null && cont.Type__c.equalsIgnoreCase(CommunityConstantsUtility.OBSERVER)){
+                if( participantentitlementContacts.containsKey(cont.Entitlement__c)){
+                    contactRecords = observerentitlementContacts.get(cont.Entitlement__c);                
+                }
+                contactRecords.add(cont);
+                observerentitlementContacts.put(cont.Entitlement__c, contactRecords);
+
+                if(! contactRecords.isEmpty()){
+
+                    observerinviteSizeEmptyMap.put(cont.Entitlement__c, false);
+                }
+
+            }
+            if(entitlementContacts.containsKey(cont.Entitlement__c))
+            allcontactRecords = entitlementContacts.get(cont.Entitlement__c);
+            
+              allcontactRecords.add(cont);
+            entitlementContacts.put(cont.Entitlement__c, allcontactRecords);
+
+        }
+
+
+
+    }
+    /*
+    * @name         : shortenID
+    * @description  : to generate the reference ID
+    * @ Input param : void
+    * @ return type : void
+    */ 
+    private static String shortenID(String idValue) {
+        String[] keys = idValue.left(15).split('');
+        while(keys.size() > 5 && keys[5] == '0') {
+            keys.remove(5);
+        }
+        return String.join(keys,'');
+    }
+    
+    /*
+    * @name         : getThreadId
+    * @description  : to generate the thread ID
+    * @ Input param : void
+    * @ return type : void
+    */ 
+    private String getThreadId(Id caseId) {
+        return 
+            'ref:_' + shortenId(UserInfo.getOrganizationId()) +
+            '._'    + shortenId(caseId) +  ':ref';
+    }
+    
+     /*
+    * @name         : sendCaseCreateNotification
+    * @description  : to send the email notification to active participants and observers.
+    * @ Input param : void
+    * @ return type : void
+    */ 
+    private void sendCaseCreateNotification(EmailTemplate emailTemplate){
+    
+    system.debug('>>>>>>>>>>>INN>>>>>>>>>>');
+    Id entitlementId = ApexPages.currentPage().getParameters().get('entitlementId');
+    String threadId;
+    Case caseDataRecord = new Case();
+    if(!String.isBlank(caseRecord.id)){
+        caseDataRecord = [SELECT caseNumber, CreatedBy.Email, EntitlementId, Subject, Entitlement.Name, Entitlement.CreatedBy.Name from Case where id =:caseRecord.id];
+        threadId = getThreadId(caseRecord.id);
+    }
+         // grab the email template
+    //EmailTemplate emailTemplate = [select Id, Subject, Body from EmailTemplate where DeveloperName = 'NXPCommunityCaseCreateNotification'];
+    
+    if(String.isBlank(entitlementId))
+    entitlementId  = caseDataRecord.entitlementID;
+  //  else
+   // currentcontext = [SELECT name from Entitlement where id =:entitlementID limit  1];
+    // process the merge fields
+    String subject = emailTemplate.Subject;
+    
+    String plainBody = emailTemplate.Body;
+    
+     //Query the org wide email address
+    List<OrgWideEmailAddress> defaultOrgAddress = [select id, Address, DisplayName from OrgWideEmailAddress WHERE displayName=:Label.CommunityDefaultOrgName];
+    
+    
+    List<Messaging.Singleemailmessage> emailLst = new List<Messaging.Singleemailmessage>();
+    
+   
+    
+    if( entitlementContacts.containsKey(entitlementId ))
+    for(Entitlement_Contact__c con: entitlementContacts.get(entitlementId )){
+    
+    //initializing plainBody everytime so that correct name is replaced
+    plainBody = emailTemplate.Body;
+    
+    if((
+    (con.status__c != null && con.Status__c.equalsIgnoreCase(CommunityConstantsUtility.ACCEPTED_STATUS)) || 
+    ( con.Type__c != null &&( con.Type__c.equalsIgnoreCase(CommunityConstantsUtility.ENTITLEMENTCONTACT_OWNER)|| 
+      con.Type__c.equalsIgnoreCase(CommunityConstantsUtility.ENTITLEMENTCONTACT_SILENT)
+     )))
+     && caseRecord.createdBY.Email !=  con.Contact__r.Email ){
+     plainBody = plainBody.replace('{!Contact.FirstName} {!Contact.LastName}', con.Contact__r.Name);
+    
+    plainBody = plainBody.replace('{!$Label.CommunityURL}', Label.CommunityURL);
+    if(caseDataRecord.CaseNumber!= null){
+    plainBody = plainBody.replace('{!Case.CaseNumber}', caseDataRecord.CaseNumber);
+    plainBody = plainBody.replace('{!Case.Subject}', caseDataRecord.Subject);
+    subject= subject.replace('{!Case.Subject}', caseDataRecord.Subject);
+    subject =   subject.replace('{!Case.CaseNumber}', caseDataRecord.CaseNumber);
+    subject =   subject.replace('{!Case.Thread_Id}', threadId);
+    plainBody =   plainBody.replace('{!Case.Thread_Id}', threadId);
+    plainBody = plainBody.replace('{!Entitlement.Name}', caseDataRecord.Entitlement.Name);
+    }
+    else{
+   
+    plainBody = plainBody.replace('{!Entitlement.CreatedBy}', currentContext.createdBy.Name);
+    plainBody = plainBody.replace('{!Entitlement.Name}', currentcontext.Name); 
+    
+    if(!defaultOrgAddress.isEmpty())
+    plainBody = plainBody.replace('{!Organization.Name}', defaultOrgAddress[0].displayName);
+    }
+    
+   
+    //build the email message
+    Messaging.Singleemailmessage email = new Messaging.Singleemailmessage();
+    if(!defaultOrgAddress.isEmpty())
+    email.setOrgWideEmailAddressId(defaultOrgAddress.get(0).Id);
+
+    email.setToaddresses(new List<String>{con.Contact__r.Email});
+    email.setWhatId(caseRecord.id);
+    email.setSubject(subject);
+    email.setPlainTextBody(plainBody);
+    emailLst.add(email);
+    }
+
+    }
+    List<Messaging.SendEmailResult> results = Messaging.sendEmail(emailLst);
+    system.debug('>>>>>>>>>>>>>results::'+results);
+    
+    }
+    public PageReference SearchCases()
+   {
+         rend1='';
+         
+         list<entitlement> listEntitlement=new list<entitlement>();
+          System.debug(entitlementCases);
+           System.debug(entitlementCases.values());
+          
+         if(entitlementCases!=null)
+          {
+           for(list<case> listcase1:entitlementCases.values())
+             {
+                  System.debug(listcase1);
+                  listcase.addAll(listcase1);
+             }
+         }
+         System.debug(listCase);
+         searchText=searchText.trim(); 
+         if(searchText.length()>1 && searchText!=null && string.isnotBlank(searchText))
+            {
+               
+                listCasesSearch=new list<case>();
+                System.debug(searchText);
+                listEntitlement=[select id from entitlement where name=:searchText and id in:entitlementCases.keyset()];
+                for(entitlement ent:listEntitlement)
+                {
+                    listCasesSearch.addall(entitlementCases.get(ent.id));
+                                       
+                }
+                if(listCasesSearch!=null)
+                listCasesSearch.sort();
+                if(listEntitlement.size()==0 || listEntitlement==null)
+                {
+                    searchText='*'+searchText+'*';
+                    String query = 'FIND :searchText IN All fields RETURNING case(Id,CaseNumber,Subject,Description,createddate,Entitlement.name,status WHERE id IN :listcase';
+                    query+= ' Order by ' +  String.escapeSingleQuotes(sortField) + ' ' + Order + ' LIMIT 15) ';
+                    list<list<SObject>> searchList=search.query(query);
+                    listCasesSearch= ((list<case>)searchList[0]);
+                   
+                }
+                System.debug(listCasesSearch);
+                if(listCasesSearch.size()>0)
+                     rend1='true';
+                else
+                    {
+                     rend1='false';
+                     ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,'Sorry!!!, No results found.'));
+        
+                     }
+          }
+          else
+          {    
+               rend1='false';
+               Apexpages.addMessage( new ApexPages.Message (ApexPages.Severity.WARNING, 'Please enter at least two characters to search. '));
+          }
+         
+       return null;
+                
+    }//End of SearchCases()
+     public PageReference sortCases()
+    {
+            System.debug(searchText);
+           if(listCasesSearch!=null && listCasesSearch.size()>0&& searchText!='' && searchText.length()>0)
+           {
+               String query = 'select Id,CaseNumber,Subject,Description,createddate,Entitlement.name,status from case WHERE id IN :listCasesSearch';
+               query+= ' Order by ' +  String.escapeSingleQuotes(sortField) + ' ' + Order + ' LIMIT 15';
+               listCasesSearch=Database.Query(query);
+               
+           }
+           return null;
+    }  
+       
+}

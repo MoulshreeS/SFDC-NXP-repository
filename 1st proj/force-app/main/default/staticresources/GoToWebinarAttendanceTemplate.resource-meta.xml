@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Public</cacheControl>
+    <contentType>application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</contentType>
+    <description>This template is for the users to upload the Attendance For different courses</description>
+</StaticResource>

@@ -1,0 +1,102 @@
+/* STYLES Dark / Grey / Line */
+/* Dark */
+div.dark-2 {
+    background: url(../img/bg-tl-200-dark.png) 0 0 no-repeat;
+    padding: 0;
+}
+
+div.dark-2 div {
+    background: url(../img/bg-tr-200-dark.png) 100% 0 no-repeat;
+}
+
+div.dark-2 div div {
+    background: url(../img/bg-bl-dark.png) 0 100% no-repeat;
+}
+
+div.dark-2 div div div {
+    background: url(../img/bg-br-dark.png) 100% 100% no-repeat;
+    height: 200px;
+    height: auto!important;
+    min-height: 200px;
+    padding: 16px 18px 18px 16px;
+    width: 100%;
+    width: auto!important;
+}
+
+/* ie6 hack */
+div div div div div.productTree {
+    background-image: none;
+    overflow: hidden;
+    padding: 0;
+}
+
+.jstree-producttree ul,.jstree-producttree li {
+    display: block;
+    list-style-type: none;
+    margin: 0;
+}
+
+.jstree-producttree.jstree-focused {
+    background-image: none;
+    padding: 0;
+}
+
+.jstree ul li ul li {
+    display: block;
+    line-height: 18px;
+    margin-left: 12px;
+    min-height: 18px;
+}
+
+.jstree a {
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+/*.jstree-producttree li, */
+.jstree-producttree ins {
+    background: url(../img/tree-expand-collapse.gif) 0 0 no-repeat transparent;
+    display: inline-block;
+    height: 13px;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    width: 15px;
+}
+
+.jstree-producttree .jstree-no-dots li,.jstree-producttree .jstree-no-dots .jstree-open ins {
+    background-position: -209px 4px;
+    cursor: pointer;
+}
+
+.jstree-producttree .jstree-no-dots .jstree-closed ins {
+    background-position: 0 4px;
+    cursor: pointer;
+}
+
+.jstree-producttree .jstree-no-dots .jstree-leaf ins {
+    background-position: -420px 4px;
+}
+
+.jstree-producttree .jstree-no-icons a .jstree-icon {
+    display: none;
+}
+
+.support.jstree-producttree .jstree-no-dots .jstree-open ins {
+    background-position: -209px 4px;
+    cursor: pointer;
+}
+
+.support.jstree-producttree .jstree-no-dots .jstree-closed ins {
+    background-position: 0 4px;
+    cursor: pointer;
+}
+
+.support.jstree-producttree .jstree-no-dots .jstree-leaf ins {
+    background-position: -420px 4px;
+}
+
+#module_productTreeExpanded a {
+    border-bottom: 0 none;
+}

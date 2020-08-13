@@ -1,0 +1,60 @@
+body {
+	margin: 0;
+/*	PAGE-BREAK-BEFORE: always; */
+/*
+    width="100%";
+    height="100%";
+    filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=3);
+	width: 100%;
+	height: 100%;
+*/	
+}
+.noPrint {display: none;}
+
+div#wrapper {margin: 0;	width: 100%;}
+div#header-main, div#header-top ul, div#breadcrumb, div#search-results, div#footer {display: none;}
+#uservoice-feedback {display:none;}
+#productTree-container, .expander-container, .tabs-container .top-left,  .tabs-container .tabs {display:none;}
+
+/* LIST */
+ul.bullet-orange-list li, ul.bullet-blue-list li, ul.bullet-green-list li, ul.bullet-grey-list li,
+ul.arrow-orange-list li, ul.arrow-blue-list li, ul.arrow-green-list li, ul.arrow-grey-list li {
+	margin: 0px;
+	padding: 0px;
+}
+ul {list-style: square inside;margin: 0px;padding-left:0px;}
+ul ul {margin-left: 12px;}
+
+/* COLOURS */
+.nxp-white, .nxp-black, .nxp-anthracite, .nxp-darkgrey, .nxp-grey, .nxp-lightgrey, .nxp-extra-lightgrey, 
+.nxp-red, .nxp-marineblue, .nxp-orange, .nxp-blue, .nxp-green, .nxp-darkorange, .nxp-darkblue, .nxp-darkgreen {
+	color: #313233;
+}
+span.bottom-dotted, span.center-dotted {
+	height: 1px;
+	border-bottom: 1px;
+	border-bottom-style: dotted;
+	border-bottom-color: #313233;
+	margin-top: 6px;
+	margin-bottom: 6px;
+}
+
+table, table.products {
+	width: 80%;
+}
+table th, table td, table.products td, table.products th, table.standard th, table.standard td {
+	margin: 0px;
+	padding: 1px;
+	font-size: 9px;
+	border: 1px solid #313233;
+}
+#section_pageHeader .article-header .article-left, 
+#section_marketingSummary .article-content .article-left {
+	width: 100%;
+}
+.tabbox-5 {
+	width: 80%;
+}
+
+/* FINALLY, REMOVE FLOATS */
+.box-1, .box-2, .box-3, .box-4 {float:none;)

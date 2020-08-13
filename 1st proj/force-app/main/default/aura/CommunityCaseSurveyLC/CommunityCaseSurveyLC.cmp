@@ -1,0 +1,127 @@
+<aura:component controller = "CommunityCaseSurveyControllerNCP" implements="forceCommunity:availableForAllPageTypes,force:appHostable,flexipage:availableForRecordHome,force:hasRecordId,lightning:hasPageReference,lightning:isUrlAddressable,flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name="commentText" type="String" />
+    <aura:attribute name="ques1" type="String"/>
+    <aura:attribute name="ques2" type="String"/>
+    <aura:attribute name="ques3" type="String"/>
+    <aura:attribute name="ques4" type="String"/>
+    <aura:attribute name="Surveyflag" type="String"/>
+    <aura:attribute name="currentcaseId" type="String"/>
+    <aura:attribute name="caselist" type="string[]"/>
+    <aura:attribute name="isOpen" type="Boolean" default="true"/>
+    <aura:attribute name="Error" type="Boolean" default="false"/>
+    <aura:attribute name="feedbackPage" type="Boolean" default="true"/>
+    <aura:attribute name="doNotSubmit" type="Boolean" default="false"/>
+    <aura:attribute name="surveysubmitted" type="Boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" description="Handler for valueInit event fired when the component has been initialised"/>
+    <aura:attribute name="options" type="List" default="[
+                                                        {'label': 'Very Dissatisfied ', 'value': '1 Very Dissatisfied'},
+                                                        {'label': 'Dissatisfied     ', 'value': '2 Dissatisfied'},
+                                                        {'label': 'Satisfied        ', 'value': '3 Satisfied'},
+                                                        {'label': 'Very Satisfied   ', 'value': '4 Very Satisfied'}
+                                                        ]"/>
+    <aura:attribute name="options2" type="List" default="[
+                                                         {'label': '0 - Not Likely at all', 'value': '0'},
+                                                         {'label': '1', 'value': '1'},
+                                                         {'label': '2', 'value': '2'},
+                                                         {'label': '3', 'value': '3'},
+                                                         {'label': '4', 'value': '4'},
+                                                         {'label': '5', 'value': '5'},
+                                                         {'label': '6', 'value': '6'},
+                                                         {'label': '7', 'value': '7'},
+                                                         {'label': '8', 'value': '8'},
+                                                         {'label': '9', 'value': '9'},
+                                                         {'label': '10 - Extremely Likely', 'value': '10'}
+                                                         ]"/>
+    <aura:if isTrue="{!(v.feedbackPage)}">
+        <div class="slds-text-heading_medium container">
+            
+            <br/><h3>Submit Survey</h3>
+            <aura:if isTrue="{!v.surveysubmitted}">
+                <h1>Error :</h1>
+                <a>Survey has already been submitted for this case</a><br/>
+                
+            </aura:if>  
+            <aura:if isTrue="{!v.Error}">
+                <h1>Error :</h1>
+                <a>Error in survey form </a><br/>
+                
+            </aura:if>
+            <aura:if isTrue="{!v.doNotSubmit}">
+                <h1>Error :</h1>
+                <div style="color:red" class="slds-text-heading_medium"><br/>
+                    <b>Please answer all questions under satisfaction survey section.</b>
+                </div>
+            </aura:if>
+            <br/>
+            <div class="row">
+                <div class="slds-text-heading_medium col-md-12 col-xs-12 bg-color-bar padding-left-10" style="background-color:#eeeeee;padding-bottom: 5px;padding-top: 5px">
+                    <h3>Case Information</h3></div>
+            </div>
+            <br/>
+            <div class="slds-text-heading_medium"><h1>Case Number : {!v.caselist[1]}</h1></div>
+            <br/>
+            <div class="slds-text-heading_medium"><h1>Case Subject : {!v.caselist[0]}</h1></div><br/>
+            
+            <div class="row">
+                <div class="slds-text-heading_medium col-md-12 col-xs-12 bg-color-bar padding-left-10" style="background-color:#eeeeee;padding-bottom: 5px;padding-top: 5px">
+                    <h3>Satisfaction Survey</h3></div><br/>
+                <div class="slds-text-heading_medium"><h3>How satisfied are you with the answer you received?</h3></div>
+                
+                <br/>
+                <lightning:radioGroup
+                                      aura:id="ques1"
+                                      name="radioButtonGroup1"
+                                      label=""
+                                      options="{! v.options }"
+                                      value="{! v.ques1 }"
+                                      type="button"/>
+                
+                <br/>
+                <div class="slds-text-heading_medium"><h3>How satisfied are you with the request resolution time?</h3></div><br/>
+                
+                <lightning:radioGroup
+                                      aura:id="ques2"
+                                      name="radioButtonGroup2"
+                                      label=""
+                                      options="{! v.options }"
+                                      value="{! v.ques2 }"
+                                      type="button"/>
+                
+                <br/>
+                <div class="slds-text-heading_medium"><h3>How satisfied are you with the support person’s ability to answer your question?</h3></div><br/>
+                
+                <lightning:radioGroup
+                                      aura:id="ques3"
+                                      name="radioButtonGroup3"
+                                      label=""
+                                      options="{! v.options }"
+                                      value="{! v.ques3 }"
+                                      type="button"/>
+                <br/>
+                <div class="slds-text-heading_medium"><h3>Based on your experience with our support, would you tell others  “You should use it” ?</h3></div><br/>
+                <lightning:radioGroup
+                                      aura:id="ques4"
+                                      name="radioButtonGroup4"
+                                      label=""
+                                      options="{! v.options2 }"
+                                      value="{! v.ques4 }"
+                                      type="button"/>
+                <br/>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="slds-text-heading_medium col-md-12 col-xs-12 bg-color-bar padding-left-10" style="background-color:#eeeeee;padding-bottom: 5px;padding-top: 5px">
+                    <h3>Any additional comments you would like to share with us?</h3></div>
+            </div><br/>
+            <lightning:inputRichText value="{!v.commentText}" placeholder=""/><br/>
+            <aura:if isTrue="{!v.isOpen}">
+                <lightning:button variant="brand" label="Submit This Survey" onclick="{!c.submitSurvey}"/>
+                <lightning:input aura:id="Surveyflag" name="surveyflag" label="surveyflag" value="{!v.caselist[2]}" class="slds-hidden" />    
+            </aura:if>
+        </div>
+        <aura:set attribute="else">
+            <br/><br/>
+            <div><b><h1><center>Thank you for completing the survey. Your survey answers have been submitted successfully!</center></h1></b></div>
+        </aura:set>
+    </aura:if>
+</aura:component>

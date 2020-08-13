@@ -1,0 +1,10 @@
+<!--
+@Created By      Nisha Agrawal
+@Created Date    Jan 10, 2019
+@Description     VF page to launch flow from quick action Add Contact from Lead   
+-->
+
+<apex:page standardController="Lead">
+    <flow:interview name="CreateContactFromLeadPage" finishLocation="{!URLFOR('/apex/CreateContactForPartners')}" buttonLocation="top" showHelp="false">   
+    </flow:interview>
+</apex:page>

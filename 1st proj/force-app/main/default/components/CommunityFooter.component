@@ -1,0 +1,25 @@
+<apex:component >
+<style>
+.footer_gradient a{
+border-bottom: 1px dotted #adaeaf;
+}
+
+</style>
+<div class="footer_gradient" id="footer"
+style="position: relative; bottom: -55px;height:50px; width:1349px;">
+<div id="footer-bottom-links">
+
+<ul class="left" style="font-size:12px;padding-left: 0px;">
+<li class="first disp_inline border"><a href="http://www.nxp.com/site-owner.html" title="NXP Semiconductors">NXP</a> </li>
+<li class="disp_inline border" ><a href="http://www.nxp.com/privacy-policy.html" title="Privacy policy">Privacy</a> </li>
+<li class="disp_inline border"><a href="http://www.nxp.com/terms-of-use.html" title="Terms of use">Terms of use</a></li>
+<li class="disp_inline border"><a href="http://nxp.uservoice.com/forums/89223-nxp-semiconductors-beta-feedback" title="Feedback" class="_blank" target="_blank">Feedback</a></li>
+<li class="last disp_inline"><a href="http://www.nxp.com/news/mobile-app.html" title="Mobile apps">Mobile apps</a></li>
+<li class="last disp_inline" style="padding-left: 275px;font-size:10px;">©2006-<script>document.write(new Date().getFullYear())</script> NXP Semiconductors. All rights reserved. 沪ICP备1020807</li>
+</ul>
+
+</div>
+
+
+</div>
+</apex:component>

@@ -1,0 +1,211 @@
+<apex:component allowDML="true">
+    <apex:attribute name="noContext" type="boolean" required="true" assignTo="{!pController.noContextVar}" description="required to track if entitlement validation is mandatory" />
+    <apex:attribute name="pController" type="CommunityContextController" required="true" description="controller" />
+
+    <body>
+        <apex:form >
+            <apex:pageMessages />
+            <div id="nxp-wrapper">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h3>{!$Label.CommunityNewCase}</h3>
+                            <p style="font-size=15px" class="lead">
+                                <apex:outputText escape="false" value="{!$Label.CommunityCaseInformation}" />
+                            </p>
+                            <h3 class="invitee-intro-title">
+                                {!pController.ErrorMessage}
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Case Owner -->
+                        <!--  <div class="col-sm-12">
+                            <hr />
+                            </div> -->
+                        <!-- end Case Owner -->
+                        <!-- <div class="row">
+                            <div class="col-sm-6">
+
+                                <div class="form-group">
+                                    <label for="" class="control-label">{!$Label.CommunityStatus} <span class="text-required">*</span></label>
+
+                                    <apex:outputfield styleClass="form-control" value="{!pController.caseRecord.Status}" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+
+                                <div class="form-group">
+                                    <label for="" class="control-label">{!$Label.CommunityPriority}<span class="text-required">*</span></label>
+
+                                    <apex:inputfield styleClass="form-control" value="{!pController.caseRecord.Priority}" required="true"/>
+                                </div>
+
+                            </div>
+
+                            </div> -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h3 class="form-section-heading">{!$Label.CommunityDescriptionInformation}</h3>
+                                <hr />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                               
+                               <div  class="form-group">
+                                   <h5> <label for="" class="control-label">{!$Label.CommunityPriority}<span class="text-required">*</span></label></h5>
+                                    <apex:inputfield styleClass="form-control" value="{!pController.caseRecord.Priority}" required="true" />
+                               </div>
+                                <div class="form-group">
+                                   <h5> <label for="" class="control-label">{!$Label.CommunityTopic}<span class="text-required">*</span></label></h5>
+                                    <apex:inputfield styleClass="form-control" value="{!pController.caseRecord.My_Question_is_Related__c}" required="true" />
+                                </div>
+                                <!-- /.form-group -->
+                                <div class="form-group">
+                                  <h5>  <label for="" class="control-label disabled">{!$Label.CommunitySubTopic}</label></h5>
+                                    <font style="font-size: 14px;line-height: 1.42857143;color: #979799;">
+                                        <apex:inputfield styleClass="form-control" value="{!pController.caseRecord.Sub_Topic__c}"/>
+                                    </font>
+                                </div>
+                                <!-- /.form-group -->
+                                <div class="form-group">
+                                  <h5>  <label for="" class="control-label" id="product_level_1_label">{!$Label.CommunityProductLevel} <span class="text-required">*</span></label></h5>
+                                    <apex:inputfield styleClass="form-control" value="{!pController.caseRecord.Product__c}" required="true" />
+                                </div>
+                                <!-- /.form-group -->
+                                <!-- Product 2 Select - Conditional -->
+                                <div class="form-group">
+                                   <h5> <label for="" class="control-label disabled" id="product_level_2_label">{!$Label.CommunityProductLevel2}</label></h5>
+                                    <!-- Disabled -->
+                                    <font style="font-size: 14px;line-height: 1.42857143;color: #979799;">
+                                        <apex:inputfield styleClass="form-control" value="{!pController.caseRecord.Product_Category__c}" />
+                                    </font>
+                                </div>
+                                <!-- /.form-group -->
+                                <div class="form-group">
+                                  <h5>  <label for="" class="control-label disabled">{!$Label.CommunityProductLevel3}</label></h5>
+                                    <font style="font-size: 14px;line-height: 1.42857143;color: #979799;">
+                                        <apex:inputfield styleClass="form-control" value="{!pController.caseRecord.Product_Sub__c}" />
+                                    </font>
+                                </div>
+                                <!-- /.form-group -->
+                                <div class="form-group">
+                                   <h5>  <label>
+                                        {!$Label.CommunityProductTypeNumber}
+                                        <!--  <a class="info-tooltip" ref="#" data-toggle="tooltip" data-placement="left" title="{!$Label.CommunityPartNumberHelpText}">&#63;</a> -->
+                                    </label> </h5>
+                                    <apex:inputfield styleClass="form-control" value="{!pController.caseRecord.Product_Type_Number__c}" />
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <!-- /.col-sm-6 -->
+                            <div class="com-sm-6 text-right"><font color="red">{!$Label.CommunityRequiredLabels}</font></div>
+                        </div>
+                        <!-- /.row -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h3 class="form-section-heading">{!$Label.CommunitySubjectInformation}</h3>
+                                <hr />
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>{!$Label.CommunitySubject}<span class="text-required">*</span></label>
+                                    <!--  <input type="text" class="form-control" id=""/> -->
+                                    <apex:inputfield styleClass="form-control" value="{!pController.caseRecord.Subject}" required="true" />
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <!-- /.col-sm-12 -->
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>{!$Label.CommunityDescription}<span class="text-required">*</span></label>
+                                    <!-- <textarea class="form-control" rows="4" ></textarea> -->
+                                    <apex:inputTextArea styleClass="form-control" rows="15" value="{!pController.caseRecord.Description}" required="true" />
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <h3 class="form-section-heading">
+                                        {!$Label.CommunityCaseAttachment}
+                                    </h3>
+                                    <br/> {!$Label.CommunityFiveAttachments}
+                                    <hr/>
+                                    <apex:outputPanel id="attach" layout="none">
+                                        <apex:repeat value="{!pController.caseAttachments}" var="caseAttachment">
+                                            <apex:inputFile value="{!caseAttachment.body}" filename="{!caseAttachment.name}" />
+                                            <br/>
+                                        </apex:repeat>
+                                        <!--For future enhancement to add two attachments using button
+                                            <apex:commandLink styleclass="form-section-heading" immediate="true" action="{!addAttachment}" rendered="{!pController.caseAttachments.size!=5}">{!$Label.CommunityMoreFiles}
+                                                <span class="icon icon-plus"></span>
+                                                <a class="info-tooltip" ref="#" data-toggle="tooltip" data-placement="left" title="{!$Label.CommunityAttachmentInfo}">&#63;</a>
+
+                                            </apex:commandLink>-->
+                                    </apex:outputPanel>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group text-center">
+                                <apex:commandbutton styleclass="btn btn-lg btn-orange" value="{!$Label.CommunitySubmitButtonLabel}" rendered="{!pController.noContextVar}" action="{!pController.SaveCaseNewRecord}" />
+                                <apex:commandbutton styleclass="btn btn-lg btn-orange" action="{!pController.saveCaseDetailRecord}" value="{!$Label.CommunityCaseSave}" rendered="{!!pController.noContextVar}" />
+                                <button class="btn btn-lg" onclick="window.location.href='{!URLFOR($Page.CommunityContextPage)}?currentPageNum={!pController.CurrentPageNumber }'" type="reset">Cancel</button>
+                            </div>
+                        </div>
+                        <!-- <div class="col-sm-12">
+                            <div class="form-group text-center">
+                                <apex:commandbutton styleclass="btn btn-lg btn-block btn-orange" action="{!saveCaseDetailRecord}" value="{!$Label.CommunityCaseSave}" />
+                            </div> -->
+                        <!-- /.form-group -->
+                        <!--  </div> -->
+                        <!-- <div class="col-sm-3">
+                            <div class="form-group text-center">
+                                <apex:commandbutton styleclass="btn btn-lg btn-block" action="{!savepController.caseRecord}" value="{!$Label.CommunitySaveClose}"/>
+                            </div>
+
+                            </div>
+                            <div class="col-sm-3">
+                            <div class="form-group text-center">
+                                <apex:commandbutton styleclass="btn btn-lg btn-block" action="{!saveCaseNewRecord}" value="{!$Label.CommunitySaveNew}"/>
+                            </div>
+
+                            </div> -->
+                        <!-- <div class="col-sm-3">
+                            <div class="form-group text-center">-->
+                        <!--  <button type="reset" class="btn btn-lg btn-block" onclick="window.location.href='{!URLFOR($Page.CommunityContextPage)}'">{!$Label.CommunityCancelButtonLabel}</button>-->
+                        <!--    </div> -->
+                        <!-- /.form-group -->
+                        <!--    </div>
+                            </div> -->
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container -->
+            </div>
+            <!-- /#nxp-wrapper -->
+            <script type="text/javascript">
+                jQuery(document).ready(function($) {
+
+                    if (window.location.search.indexOf('entitlementId') == -1 && '{!noContext}' == 'false') {
+                        alert('{!$Label.CommunityRedirectContext}');
+                        window.location.href = '{!URLFOR($Page.CommunityContextPage)}?currentPageNum={!pController.CurrentPageNumber }';
+                    }
+
+                    $('#form_tabs a').click(function(e) {
+                        e.preventDefault();
+                        $(this).tab('show');
+                    });
+
+                    $(function() {
+                        $('[data-toggle="tooltip"]').tooltip()
+                    });
+
+                }); // end document ready
+            </script>
+        </apex:form>
+    </body>
+</apex:component>

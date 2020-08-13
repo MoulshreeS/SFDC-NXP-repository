@@ -1,0 +1,65 @@
+<apex:component >
+    
+    <!-- NXP COMMUNITY HEADER -->
+    <div class="main-nav">
+        <div class="container nav-holder">
+            <div class="row">
+                <div class="col-md-2 col-sm-12 col-cs-12">
+                    <button type="button" class="pull-left hidden-md hidden-lg">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="http://www.nxp.com"><img src="{!URLFOR($Resource.Forum_Community_3,'NXP-community/img/logo-nxp.svg')}" onerror="this.onerror=null; this.src='{!URLFOR($Resource.Forum_Community_3,'NXP-community/img/logo-nxp.svg')}'" alt="NXP Semiconductors" class="logo-nxp"/></a>
+                </div>
+                <div class="col-md-6 col-sm-7 col-xs-6" style="margin-left:-20px;">
+                   <ul class="navigation">
+                    <li><a href="http://www.nxp.com/products/" class="nav-products" data-topic="products">{!$Label.Community_header_Product}<span class="arrow">›</span></a></li>
+                    <li><a href="http://www.nxp.com/applications/" class="nav-solutions" data-topic="solutions">{!$Label.Community_header_Solutions}<span class="arrow">›</span></a></li>
+                    <li><a href="https://www.nxp.com/webapp/support/sales-and-support:SUPPORTHOME" class="nav-support" data-topic="support">{!$Label.Community_header_Support}<span class="arrow">›</span></a></li>
+                    <li><a href="http://www.nxp.com/about.html" class="nav-about" data-topic="about">{!$Label.Community_header_About}<span class="arrow">›</span></a></li>
+               </ul>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-push-1" style="margin-left:20px;">
+                    <ul class="functions" >
+                        <li>
+                            <a href="http://www.nxp.com/search" class="func-search">
+                                <i class="fa fa-search">
+                        
+                     </i> {!$Label.Community_header_Search}
+                            </a>
+                            <form action="http://www.nxp.com/search" class="form-horizontal pull-right search slide-out">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" name="q" class="form-control input-lg search-box" placeholder="Search nxp.com" /><i class="fa fa-close"><!--_--></i>
+                                    <button class="input-group-addon submitform" type="submit"><i class="fa fa-search"><!--_--></i></button>
+                                    
+                                </div>
+                            </div>
+                        </form>
+                        </li>
+                        <li>
+                            <a href="http://investors.nxp.com/" class="func-investors" target="_blank">
+                                <i class="fa fa-bar-chart">
+                        <!--_-->
+                     </i> {!$Label.Community_header_Investors}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://community.nxp.com" class="func-language various fancybox.iframe">
+                                <i class="fa fa-globe">
+                        <!--_-->
+                     </i> {!$Label.Community_header_Language}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://my.nxp.com/my" class="func-mynxp"><img src="{!URLFOR($Resource.Forum_Community_3,'NXP-community/img/logo-mynxp.svg')}" onerror="this.onerror=null; this.src='{!URLFOR($Resource.Forum_Community_3,'NXP-community/img/logo-mynxp.svg')}'" style="height: 26px;"/>{!$Label.Community_header_MyNXP}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- NXP COMMUNITY HEADER -->
+
+</apex:component>

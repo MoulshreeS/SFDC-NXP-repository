@@ -1,0 +1,34 @@
+/* For IE */
+
+/* follow us component */
+#social_connect_title{
+	text-align: left;
+}
+/* Design resources component */
+.box_component{
+	text-align: left;
+}
+/* topics left sidebar*/
+.datacategorylinks{
+	text-align: left;
+}
+/* chatter feed component */
+.cxfeedcontainer{
+	text-align: left;
+}
+/* IE 7 chatter */
+.mainContent{
+	*width: 550px !important; 
+}
+
+
+.designresourcesul { *padding-left:0 !important; padding-left: 15px;}
+
+
+ 
+.box_component li{
+  *margin-left:0 !important;
+  margin-left: 1.5em;
+}
+
+.box_component p{*margin-left: -15px !important;}

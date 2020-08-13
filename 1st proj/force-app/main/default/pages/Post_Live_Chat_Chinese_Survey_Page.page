@@ -1,0 +1,394 @@
+<!--***************************************************************************************************
+Last Modified By : Shridevi
+Last Modified Date:01-Feb-2018
+Description:Satisfaction Survey Changes
+--------------------------------------------------------------------------
+Last Modified By: Kumaresh M
+Last Modified Date : 31-05-2019
+Description : Modified as part of SFDC-2822
+*******************************************************************************************************-->
+
+<apex:page id="thepage" sidebar="false" showHeader="false" standardStylesheets="false" controller="CommunityLiveAgentChatSurveyController">
+    <div id="thepage" style="overflow:auto;height:450px;">  
+        <head>
+            <meta charset="utf-8"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <meta name="description" content=""/>
+            <meta name="author" content=""/>
+            <title>Survey - NXP TechSupport Community</title>
+            <apex:stylesheet value="{!URLFOR($Resource.Forum_Community_3, 'NXP-community/css/jasny-bootstrap.css')}" ></apex:stylesheet>  
+            <apex:stylesheet value="{!URLFOR($Resource.Forum_Community_3, 'NXP-community/css/font-awesome.css')}" ></apex:stylesheet>      
+            <apex:stylesheet value="{!URLFOR($Resource.Forum_Community_3, 'NXP-community/css/hover.css')}" ></apex:stylesheet>
+            <apex:stylesheet value="{!URLFOR($Resource.Forum_Community_3, 'NXP-community/css/main.css')}" ></apex:stylesheet>
+            <apex:stylesheet value="{!URLFOR($Resource.communityContextSearchStyles)}"/>
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+        </head>
+        <script>
+        function loaddefaults()
+        {
+            document.getElementById('DefaultResolvedTime').click();
+            document.getElementById('DefaultResolutionTime').click();
+            document.getElementById('DefaultSupportPerson').click();
+            document.getElementById('DefaultSharewithothers').click();
+        }
+        </script>
+        
+        <body class="new-case" onload="loaddefaults()">
+            <apex:image value="{!$Resource.NXPLogo}" alt="NXP Semiconductor" width="85"
+                        height="32" style="outline:none; border:0;" />
+            
+            
+            
+            <apex:form styleclass="form-horizontal" id="surveyForm">
+                
+                <div id='details'>
+                    
+                    
+                    <div class="container">
+                        
+                        <h4><b>感谢您的反馈。</b></h4>
+                        <apex:pageMessages ></apex:pageMessages>
+                        <div class="h-spacer">&nbsp;</div>
+                        
+                        <div style="color:#e66a08  ; font-size: 16px"> <b>
+                            备注：此聊天窗口没有被关闭， 
+                            您只是返回到该页面？ 
+                            您的聊天窗口可能在一段时间没有回复后自动关闭。 如有需要，欢迎再次联系我们！</b>
+                            
+                            
+                        </div>
+                        
+                        <!--    <div class="row">
+<div class="col-md-8 col-xs-8">                                                           
+<div class="form-group">
+<apex:outputLabel value="Chat Key" styleclass="control-label col-md-4" id="caseNumber"/>
+<div class="control-label col-md-8">
+<apex:outputText value="{!$CurrentPage.parameters.chatKey}" id="chat" >
+</apex:outputText>  
+</div>
+</div>
+
+</div>  
+</div> 
+<br/>  -->
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12 bg-color-bar padding-left-10">
+                                <h5>满意度调查</h5></div>
+                        </div>
+                        <br/>
+                        <!-----------------------------Modified by Shridevi:SFDC-1107:Disply all survery answers in radio buttons instead of dropdown---->
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-12"><b>已解决 ?</b></label><br/><br/>
+                                    
+                                    <!--<div style="margin-top: 5px; padding-bottom: 10px" class="col-md-12">
+<apex:outputPanel styleClass="requiredInput"  layout="block" id="inputPanelResolved">                 
+<apex:outputPanel styleClass="requiredBlock" layout="block" id="inputBlockResolved"/>
+<apex:inputHidden value="{!strResolved}" id="resolved"/> 
+<label class="radio-inline ">
+<input type="radio" class="label-content-4 radio-button-y" id="radio1" onchange="document.getElementById('{!$Component.resolved}').value=' 1 Very Dissatisfied';" value="{!quesValues[0].value}" name="optradio"/><b>{!quesValues[0].label}</b>
+</label>
+<label class="radio-inline label-content-4">
+<input type="radio"  id="radio2" class="radio-button-y" onchange="document.getElementById('{!$Component.resolved}').value=' 2 Dissatisfied';" value="{!quesValues[1].value}" name="optradio"/><b>{!quesValues[1].label}</b>
+</label>
+<label class="radio-inline label-content-4">
+<input type="radio" id="radio3" class="radio-button-y" onchange="document.getElementById('{!$Component.resolved}').value=' 3 Satisfied';" value="{!quesValues[2].value}" name="optradio"/><b>{!quesValues[2].label}</b>
+</label>
+<label class="radio-inline label-content-4">
+<input type="radio" id="radio4" class="radio-button-y" onchange="document.getElementById('{!$Component.resolved}').value=' 4 Very Satisfied';" value="{!quesValues[3].value}" name="optradio" checked="checked"/><b>{!quesValues[3].label}</b>
+</label> 
+</apex:outputPanel>
+</div>!-->
+                                    <div class="container">
+                                        
+                                        <div class="btn-group survey media-object" data-toggle="buttons">
+                                            
+                                            <apex:inputHidden value="{!strResolved}" id="resolved"/> 
+                                            
+                                            <label class="btn btn-default  form-check-label option-button">
+                                                <br/>  <input name="options" class="form-check-input" type="radio" value="1 Very Dissatisfied" onchange="document.getElementById('{!$Component.resolved}').value='1 Very Dissatisfied';" autocomplete="off"/>很不满意<br/><i class="material-icons">sentiment_very_dissatisfied</i>
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button">
+                                                <br/>  <input name="options" class="form-check-input" type="radio" value="2 Dissatisfied" onchange="document.getElementById('{!$Component.resolved}').value='2 Dissatisfied';"  autocomplete="off"/> 不满意<br/><i class="material-icons">sentiment_dissatisfied</i>
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button">
+                                                <br/>  <input name="options" class="form-check-input" type="radio" value="3 Satisfied" onchange="document.getElementById('{!$Component.resolved}').value='3 Satisfied';" autocomplete="off"/> 满意<br/><i class="material-icons">sentiment_satisfied</i>
+                                            </label>
+                                            <label class="btn btn-default form-check-label option-button">
+                                                <br/>  <input id="DefaultResolvedTime" name="options" class="form-check-input" type="radio"  value="4 Very Satisfied" onchange="document.getElementById('{!$Component.resolved}').value='4 Very Satisfied';" autocomplete="off"/> 非常满意<br/><i class="material-icons">sentiment_very_satisfied</i>
+                                            </label>   
+                                        </div>  
+                                    </div> 
+                                    <div style="margin-top: 5px;" class="col-md-12">
+                                        <apex:outputtext value="你有多满意答案您收到此聊天吗?" id="resolvedQuestion" style="color:Black" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-12"><b>解决时间吗?</b></label><br/><br/>
+                                    <!--<div class="col-md-12">
+<apex:outputPanel styleClass="requiredInput"  layout="block" id="inputPanelResolution">                 
+<apex:outputPanel styleClass="requiredBlock" layout="block" id="inputBlockResolution"/>
+<apex:inputHidden value="{!strResolutionTime}" id="resolutionTime"/> 
+<label class="radio-inline">
+<input type="radio" class="label-content-4 radio-button-y" id="radio5" onchange="document.getElementById('{!$Component.resolutionTime}').value=' 1 Very Dissatisfied';" value="{!quesValues[0].value}" name="optradio1"/><b>{!quesValues[0].label}</b>
+</label>
+<label class="radio-inline label-content-4">
+<input type="radio"  id="radio6" class="radio-button-y" onchange="document.getElementById('{!$Component.resolutionTime}').value=' 2 Dissatisfied';" value="{!quesValues[1].value}" name="optradio1"/><b>{!quesValues[1].label}</b>
+</label>
+<label class="radio-inline label-content-4">
+<input type="radio" id="radio7" class="radio-button-y" onchange="document.getElementById('{!$Component.resolutionTime}').value=' 3 Satisfied';" value="{!quesValues[2].value}" name="optradio1"/><b>{!quesValues[2].label}</b>
+</label>
+<label class="radio-inline label-content-4">
+<input type="radio" id="radio8" class="radio-button-y" onchange="document.getElementById('{!$Component.resolutionTime}').value=' 4 Very Satisfied';" value="{!quesValues[3].value}" name="optradio1" checked="checked"/><b>{!quesValues[3].label}</b>
+</label>
+</apex:outputPanel>
+</div>!-->
+                                    <div class="container">
+                                        <div class="btn-group survey media-object" data-toggle="buttons">
+                                            
+                                            <apex:inputHidden value="{!strResolutionTime}" id="resolutionTime"/> 
+                                            <label class="btn btn-default  form-check-label option-button">
+                                                <br/> <input name="options1" class="form-check-input" type="radio" value="1 Very Dissatisfied" onchange="document.getElementById('{!$Component.resolutionTime}').value='1 Very Dissatisfied';" autocomplete="off"/> 很不满意<br/><i class="material-icons">sentiment_very_dissatisfied</i>
+                                            </label>
+                                            <label class="btn btn-default form-check-label option-button">
+                                                <br/>  <input name="options1" class="form-check-input" type="radio" value="2 Dissatisfied" onchange="document.getElementById('{!$Component.resolutionTime}').value='2 Dissatisfied';" autocomplete="off"/> 不满意<br/><i class="material-icons">sentiment_dissatisfied</i>
+                                            </label>
+                                            <label class="btn btn-default form-check-label option-button">
+                                                <br/>  <input name="options1" class="form-check-input" type="radio" value="3 Satisfied" onchange="document.getElementById('{!$Component.resolutionTime}').value='3 Satisfied';" autocomplete="off"/> 满意<br/><i class="material-icons">sentiment_satisfied</i>
+                                            </label>
+                                            <label class="btn btn-default form-check-label option-button">
+                                                <br/>  <input id="DefaultResolutionTime" name="options1" class="form-check-input" type="radio"  value="4 Very Satisfied" onchange="document.getElementById('{!$Component.resolutionTime}').value='4 Very Satisfied';" autocomplete="off"/> 非常满意<br/><i class="material-icons">sentiment_very_satisfied</i>
+                                            </label>
+                                        </div>  
+                                    </div>
+                                    <div style="margin-top: 5px;" class="col-md-12">
+                                        <apex:outputtext value="如何满足您的聊天请求解决时间吗?" id="resolutionQuestion" style="color:Black" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-12"><b>支持人员</b></label><br/><br/>
+                                    <!--<div class="col-md-12">
+<apex:outputPanel styleClass="requiredInput"  layout="block" id="inputPanelSupport">                 
+<apex:outputPanel styleClass="requiredBlock" layout="block" id="inputBlockSupport"/>
+<apex:inputHidden value="{!strSupportPerson}" id="supportPerson"/> 
+<label class="radio-inline">
+<input type="radio" class="label-content-4 radio-button-y" id="radio9" onchange="document.getElementById('{!$Component.supportPerson}').value=' 1 Very Dissatisfied';" value="{!quesValues[0].value}" name="optradio2"/><b>{!quesValues[0].label}</b>
+</label>
+<label class="radio-inline label-content-4">
+<input type="radio"  id="radio10" class="radio-button-y" onchange="document.getElementById('{!$Component.supportPerson}').value=' 2 Dissatisfied';" value="{!quesValues[1].value}" name="optradio2"/><b>{!quesValues[1].label}</b>
+</label>
+<label class="radio-inline label-content-4">
+<input type="radio" id="radio11" class="radio-button-y" onchange="document.getElementById('{!$Component.supportPerson}').value=' 3 Satisfied';" value="{!quesValues[2].value}" name="optradio2"/><b>{!quesValues[2].label}</b>
+</label>
+<label class="radio-inline label-content-4 ">
+<input type="radio" id="radio12" class="radio-button-y" onchange="document.getElementById('{!$Component.supportPerson}').value=' 4 Very Satisfied';" value="{!quesValues[3].value}" name="optradio2" checked="checked"/><b>{!quesValues[3].label}</b>
+</label>
+</apex:outputPanel>
+</div>!-->
+                                    <div class="container">
+                                        <div class="btn-group survey media-object" data-toggle="buttons">
+                                            
+                                            <apex:inputHidden value="{!strSupportPerson}" id="supportPerson"/>
+                                            
+                                            <label class="btn btn-default  form-check-label option-button">
+                                                <br/>  <input name="options2" class="form-check-input" type="radio" value="1 Very Dissatisfied" onchange="document.getElementById('{!$Component.supportPerson}').value='1 Very Dissatisfied';" autocomplete="off"/> 很不满意<br/><i class="material-icons">sentiment_very_dissatisfied</i>
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button">
+                                                <br/>  <input name="options2" class="form-check-input" type="radio" value="2 Dissatisfied" onchange="document.getElementById('{!$Component.supportPerson}').value='2 Dissatisfied';" autocomplete="off"/> 不满意<br/><i class="material-icons">sentiment_dissatisfied</i>
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button">
+                                                <br/>  <input name="options2" class="form-check-input" type="radio" value="3 Satisfied" onchange="document.getElementById('{!$Component.supportPerson}').value='3 Satisfied';" autocomplete="off"/> 满意<br/><i class="material-icons">sentiment_satisfied</i>
+                                            </label>
+                                            <label class="btn btn-default form-check-label option-button">
+                                                <br/>  <input id="DefaultSupportPerson" name="options2" class="form-check-input" type="radio"  value="4 Very Satisfied" onchange="document.getElementById('{!$Component.supportPerson}').value='4 Very Satisfied';" autocomplete="off"/> 非常满意<br/><i class="material-icons">sentiment_very_satisfied</i>
+                                            </label>
+                                            
+                                        </div>    
+                                    </div> 
+                                    <div style="margin-top: 5px;" class="col-md-12">
+                                        <apex:outputtext id="supportQuestion" value="您的满意, 工作人员的支持, 回答您的问题?" style="color:Black"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="control-label col-md-12"><b>推荐给他人？</b></label><br/><br/>
+                                    <!--<div class="col-md-12">
+<apex:outputPanel styleClass="requiredInput"  layout="block" id="inputPanelLike">                 
+<apex:outputPanel styleClass="requiredBlock" layout="block" id="inputBlockLike"/>
+<apex:selectRadio id="inputLike" styleClass="col-xs-12 col-sm-7 col-md-5"   value="{!strLikeOurSupport}"   layout="lineDirection">
+<apex:selectOptions value="{!quesValues1}" />
+</apex:selectRadio>
+</apex:outputPanel>
+</div>
+<table class="col-xs-12  col-md-12" >
+<td  class="col-xs-8 col-sm-4 col-md-3">完全不推荐</td>
+<td Class="col-xs-12 col-sm-10 col-md-9"><span class="label-content-2 ">乐于推荐</span></td>
+</table>!-->
+                                    <div class="container">
+                                        <div class="btn-group survey media-object" data-toggle="buttons">
+                                            
+                                            <apex:inputHidden value="{!strLikeOurSupport}" id="LikeOurSupport"/> 
+                                            
+                                            <label class="btn btn-default form-check-label option-button">
+                                                <input name="options3" class="form-check-input" type="radio" value="0 " onchange="document.getElementById('{!$Component.LikeOurSupport}').value='0';" autocomplete="off"/> 0<br/><i class="material-icons">sentiment_very_dissatisfied</i><br/>完全不推荐
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button" style="height:68px">
+                                                <input name="options3" class="form-check-input" type="radio" value="1 " onchange="document.getElementById('{!$Component.LikeOurSupport}').value='1';" autocomplete="off"/> 1
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button" style="height:68px">
+                                                <input name="options3" class="form-check-input" type="radio" value="2 " onchange="document.getElementById('{!$Component.LikeOurSupport}').value='2';" autocomplete="off"/> 2
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button" style="height:68px">
+                                                <input name="options3" class="form-check-input" type="radio" value="3 " onchange="document.getElementById('{!$Component.LikeOurSupport}').value='3';" autocomplete="off"/> 3
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button" style="height:68px">
+                                                <input name="options3" class="form-check-input" type="radio" value="4 " onchange="document.getElementById('{!$Component.LikeOurSupport}').value='4';" autocomplete="off"/> 4
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button" style="height:68px">
+                                                <input name="options3" class="form-check-input" type="radio" value="5 " onchange="document.getElementById('{!$Component.LikeOurSupport}').value='5';" autocomplete="off"/> 5
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button" style="height:68px">
+                                                <input name="options3" class="form-check-input" type="radio" value="6 " onchange="document.getElementById('{!$Component.LikeOurSupport}').value='6';" autocomplete="off"/> 6
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button" style="height:68px">
+                                                <input name="options3" class="form-check-input" type="radio" value="7 " onchange="document.getElementById('{!$Component.LikeOurSupport}').value='7';" autocomplete="off"/> 7    
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button" style="height:68px">
+                                                <input name="options3" class="form-check-input" type="radio" value="8 " onchange="document.getElementById('{!$Component.LikeOurSupport}').value='8';" autocomplete="off"/> 8
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button" style="height:68px">
+                                                <input name="options3" class="form-check-input" type="radio" value="9" onchange="document.getElementById('{!$Component.LikeOurSupport}').value='9';" autocomplete="off"/> 9
+                                            </label>
+                                            
+                                            <label class="btn btn-default form-check-label option-button">
+                                                <input id="DefaultSharewithothers" name="options3" class="form-check-input" type="radio" value="10" onchange="document.getElementById('{!$Component.LikeOurSupport}').value='10';" autocomplete="off"/>10<br/><i class="material-icons">sentiment_very_satisfied</i><br/>非常乐意推荐
+                                            </label>
+                                            
+                                        </div>      
+                                    </div>
+                                    <div style="margin-top: 5px;" class="col-md-12">
+                                        <apex:outputtext id="likeQuestion" value="基于您对我们服务的使用情况，您会推荐他人使用我们的服务吗？" />
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <br/>
+                        <!-------------------------------------------------Ends Here------------------------------------------------>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12 bg-color-bar padding-left-10">
+                                <h5>任何其他评论您要共享的吗?</h5></div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-8 col-xs-8">
+                                
+                                <div class="form-group">
+                                    <label class="control-label col-md-8"><b>评论</b></label>
+                                    <div class="col-md-12">
+                                        <apex:outputPanel styleClass="requiredInput"  layout="block" id="inputPanelComment" >                 
+                                            <apex:outputPanel styleClass="requiredBlock" layout="block" id="inputBlockComment"/>
+                                            <apex:inputTextarea value="{!strComment}" rows="5" cols="45" id="inputComment" />
+                                        </apex:outputPanel>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <apex:outputtext value="请添加任何额外的评论。" id="commentQuestion"  style="color:Black"/>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <apex:inputHidden value="{!chatKey}" id="myHiddenField" />   
+                            <!--  <apex:inputHidden value="{!chatbut}" id="myHiddenboolField" />  -->
+                            <apex:inputHidden value="{!flgChinese}" id="myHiddenboolField" />      
+                        </div><br/>
+                        
+                        <apex:actionFunction name="passStringToController" action="{!submitSurvey}" rerender="myHiddenField,myHiddenboolField"/>
+                        <!-- <apex:actionFunction name="passStringToController" action="{!submitSurvey}" rerender="myHiddenField,myHiddenboolField"/>  -->
+                        
+                        <apex:commandButton value="提交评价"  onclick="setVar('{!$CurrentPage.parameters.chatKey}','{!$CurrentPage.parameters.buttonId}'); return false;" id="submitQuestion"> 
+                            
+                        </apex:commandButton>
+                        
+                    </div>
+                    
+                </div>
+                
+                
+                <div id='abandoned' style='display: none;'>
+                    <apex:outputtext value="很抱歉. 感觉免费 要开始新的一届会议。" id="disconnectComment" style="color:Black"/>
+                    &nbsp; <apex:outputLink value="http://www.nxp.com/zh-Hans/support/sales-and-support:SUPPORTHOME?lang_cd=zh-Hans">转至</apex:outputLink>
+                    &nbsp;  <apex:outputtext value="恩智浦半导体销售和支持" id="disconnectComment1" style="color:Black"/>
+                    
+                </div>
+                
+            </apex:form><br/>
+            
+            <!--    <apex:image value="{!$Resource.NXPLogo}" alt="NXP Semiconductor" width="85"
+height="32" style="outline:none; border:0;" />     -->
+            
+            <div class="h-spacer"></div>
+            <!-- Menu for user configuration -->
+            <div id="user-config-popover" style="display:none">
+                <ul class='nav nav-pills nav-stacked'>
+                    <!-- <li><apex:outputlink style="width:179px; margin-left: 0px;" value="/community/CommunitiesEditUserProfile" rendered="{!If(($Profile.Name='NXP Customer Community Login User'),true,false)}" > Edit profile</apex:outputlink></li>
+<li ><apex:outputlink style="width:179px; margin-left: 0px;" value="/secur/logout.jsp?retUrl=https%3A%2F%2Fnxpcommunity.force.com%2Fcommunity%2FCommunityOverview">Logout</apex:outputlink></li>
+-->
+                    <li ><apex:outputlink style="width:179px; margin-left: 0px;" value="{!RedirectionToLoginPage}">Logout</apex:outputlink></li>
+                    
+                    RedirectionToLoginPage
+                </ul>
+            </div>
+            <!-- Bootstrap core JavaScript
+================================================== -->
+            <!-- Placed at the end of the document so the pages load faster -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+            <script src="{!URLFOR($Resource.Forum_Community_3,'NXP-community/js/bootstrap.js')}"></script>
+            <script src="{!URLFOR($Resource.Forum_Community_3,'NXP-community/js/collapse.js')}"></script>
+            <script src="{!URLFOR($Resource.Forum_Community_3,'NXP-community/js/nxp-community.js')}"></script>
+            <script src="{!URLFOR($Resource.Forum_Community_3,'NXP-community/js/jasny-bootstrap.min.js')}"></script>
+            <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+                <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
+            
+            
+            
+            <script>
+            function setVar(param, param1){
+                // alert("Inside set Var"+param);
+                // alert("Inside set Var"+param1);
+                
+                jQuery('[id$=myHiddenField]').val(param);
+                // jQuery('[id$=myHiddenboolField]').val(param1);
+                jQuery('[id$=myHiddenboolField]').val("True");
+                passStringToController();
+                //alert("Passed the value");
+            }
+            </script>
+            
+            <script type='text/javascript'>
+            var requestTime = '{!$CurrentPage.parameters.requestTime}';
+            var startTime = '{!$CurrentPage.parameters.startTime}';
+            // when startTime doesn't have a value, it means the chat never started
+            if (!startTime) {
+                document.getElementById('details').style.display = 'none';
+                document.getElementById('abandoned').style.display = 'block';
+            } 
+            </script>    
+            
+        </body>                
+    </div>    
+</apex:page>
