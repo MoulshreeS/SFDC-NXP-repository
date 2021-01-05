@@ -1,6 +1,0 @@
-<apex:page standardController="Account" extensions="inactivateAccountController" action="{!autoRun}" >
-  <apex:sectionHeader title="Auto-Running Apex Code"/>
-  <apex:outputPanel >
-      Inactivating......
-  </apex:outputPanel>
-</apex:page>

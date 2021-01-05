@@ -1,3 +1,0 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes">
-    <ltng:require styles="{!$Resource.nxpCommunity + '/styles/overrides.css'}"/>
-</aura:component>

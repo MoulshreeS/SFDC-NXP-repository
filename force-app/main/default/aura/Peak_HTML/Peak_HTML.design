@@ -1,3 +1,0 @@
-<design:component label="7S HTML Component">
-	<design:attribute name="html" label="Your HTML" description="Enter any HTML markup!"/>
-</design:component>
